@@ -12,3 +12,8 @@ To create a virtual environment with all dependencies:
 ```
 poetry install
 ```
+
+# Develop
+
+Upgrade poetry packages with `poetry update`.  
+Format your code with `poetry run black minerl_wrappers`.
