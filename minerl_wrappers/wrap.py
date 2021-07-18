@@ -8,4 +8,3 @@ def wrap(env, config_file=None, **kwargs):
     else:
         wrapper_fn = wrapper_config.from_kwargs(**kwargs)
     return wrapper_fn(env)
-

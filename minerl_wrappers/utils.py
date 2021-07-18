@@ -2,11 +2,13 @@ import copy
 
 
 # copied from ray: https://github.com/ray-project/ray
-def deep_update(original,
-                new_dict,
-                new_keys_allowed=False,
-                allow_new_subkey_list=None,
-                override_all_if_type_changes=None):
+def deep_update(
+    original,
+    new_dict,
+    new_keys_allowed=False,
+    allow_new_subkey_list=None,
+    override_all_if_type_changes=None,
+):
     """Updates original dict with values from new_dict recursively.
 
     If new key is introduced in new_dict, then if new_keys_allowed is not
@@ -34,9 +36,12 @@ def deep_update(original,
         # Both orginal value and new one are dicts.
         if isinstance(original.get(k), dict) and isinstance(value, dict):
             # Check old type vs old one. If different, override entire value.
-            if k in override_all_if_type_changes and \
-                    "type" in value and "type" in original[k] and \
-                    value["type"] != original[k]["type"]:
+            if (
+                k in override_all_if_type_changes
+                and "type" in value
+                and "type" in original[k]
+                and value["type"] != original[k]["type"]
+            ):
                 original[k] = value
             # Allowed key -> ok to add new subkeys.
             elif k in allow_new_subkey_list:

@@ -15,17 +15,24 @@ logger = getLogger(__name__)
 
 
 def wrap_env(
-        env, test,
-        monitor, outdir,
-        frame_skip,
-        gray_scale, frame_stack,
-        randomize_action, eval_epsilon,
-        action_choices):
+    env,
+    test,
+    monitor,
+    outdir,
+    frame_skip,
+    gray_scale,
+    frame_stack,
+    randomize_action,
+    eval_epsilon,
+    action_choices,
+):
     # wrap env: time limit...
     # Don't use `ContinuingTimeLimit` for testing, in order to avoid unexpected behavior on submissions.
     # (Submission utility regards "done" as an episode end, which will result in endless evaluation)
     if not test and isinstance(env, gym.wrappers.TimeLimit):
-        logger.info('Detected `gym.wrappers.TimeLimit`! Unwrap it and re-wrap our own time limit.')
+        logger.info(
+            "Detected `gym.wrappers.TimeLimit`! Unwrap it and re-wrap our own time limit."
+        )
         env = env.env
         max_episode_steps = env.spec.max_episode_steps
         env = ContinuingTimeLimit(env, max_episode_steps=max_episode_steps)
@@ -35,17 +42,22 @@ def wrap_env(
 
     if test and monitor:
         env = Monitor(
-            env, os.path.join(outdir, env.spec.id, 'monitor'),
-            mode='evaluation' if test else 'training', video_callable=lambda episode_id: True)
+            env,
+            os.path.join(outdir, env.spec.id, "monitor"),
+            mode="evaluation" if test else "training",
+            video_callable=lambda episode_id: True,
+        )
     if frame_skip is not None:
         env = FrameSkip(env, skip=frame_skip)
     if gray_scale:
-        env = GrayScaleWrapper(env, dict_space_key='pov')
+        env = GrayScaleWrapper(env, dict_space_key="pov")
     env = ObtainPoVWrapper(env)
-    env = MoveAxisWrapper(env, source=-1, destination=0)  # convert hwc -> chw as Pytorch requires.
+    env = MoveAxisWrapper(
+        env, source=-1, destination=0
+    )  # convert hwc -> chw as Pytorch requires.
     env = ScaledFloatFrame(env)
     if frame_stack is not None and frame_stack > 0:
-        env = FrameStack(env, frame_stack, channel_order='chw')
+        env = FrameStack(env, frame_stack, channel_order="chw")
 
     env = ClusteredActionWrapper(env, clusters=action_choices)
 
@@ -60,6 +72,7 @@ class FrameSkip(gym.Wrapper):
 
     Note that this wrapper does not "maximize" over the skipped frames.
     """
+
     def __init__(self, env, skip=4):
         super().__init__(env)
 
@@ -76,7 +89,7 @@ class FrameSkip(gym.Wrapper):
 
 
 class FrameStack(gym.Wrapper):
-    def __init__(self, env, k, channel_order='hwc', use_tuple=False):
+    def __init__(self, env, k, channel_order="hwc", use_tuple=False):
         """Stack k last frames.
 
         Returns lazy array, which is much more memory efficient.
@@ -84,7 +97,7 @@ class FrameStack(gym.Wrapper):
         gym.Wrapper.__init__(self, env)
         self.k = k
         self.observations = deque([], maxlen=k)
-        self.stack_axis = {'hwc': 2, 'chw': 0}[channel_order]
+        self.stack_axis = {"hwc": 2, "chw": 0}[channel_order]
         self.use_tuple = use_tuple
 
         if self.use_tuple:
@@ -100,9 +113,10 @@ class FrameStack(gym.Wrapper):
         if self.use_tuple:
             low_inv = np.repeat(inv_space.low, k, axis=0)
             high_inv = np.repeat(inv_space.high, k, axis=0)
-            inv_space = gym.spaces.Box(low=low_inv, high=high_inv, dtype=inv_space.dtype)
-            self.observation_space = gym.spaces.Tuple(
-                (pov_space, inv_space))
+            inv_space = gym.spaces.Box(
+                low=low_inv, high=high_inv, dtype=inv_space.dtype
+            )
+            self.observation_space = gym.spaces.Tuple((pov_space, inv_space))
         else:
             self.observation_space = pov_space
 
@@ -122,21 +136,24 @@ class FrameStack(gym.Wrapper):
         if self.use_tuple:
             frames = [x[0] for x in self.observations]
             inventory = [x[1] for x in self.observations]
-            return (LazyFrames(list(frames), stack_axis=self.stack_axis),
-                    LazyFrames(list(inventory), stack_axis=0))
+            return (
+                LazyFrames(list(frames), stack_axis=self.stack_axis),
+                LazyFrames(list(inventory), stack_axis=0),
+            )
         else:
             return LazyFrames(list(self.observations), stack_axis=self.stack_axis)
 
 
 class ObtainPoVWrapper(gym.ObservationWrapper):
     """Obtain 'pov' value (current game display) of the original observation."""
+
     def __init__(self, env):
         super().__init__(env)
 
-        self.observation_space = self.env.observation_space.spaces['pov']
+        self.observation_space = self.env.observation_space.spaces["pov"]
 
     def observation(self, observation):
-        return observation['pov']
+        return observation["pov"]
 
 
 class UnifiedObservationWrapper(gym.ObservationWrapper):
@@ -144,28 +161,31 @@ class UnifiedObservationWrapper(gym.ObservationWrapper):
     Each element of 'inventory' is converted to a square whose side length is region_size.
     The color of each square is correlated to the reciprocal of (the number of the corresponding item + 1).
     """
+
     def __init__(self, env, region_size=8):
         super().__init__(env)
 
-        self._compass_angle_scale = 180 / 255  # NOTE: `ScaledFloatFrame` will scale the pixel values with 255.0 later
+        self._compass_angle_scale = (
+            180 / 255
+        )  # NOTE: `ScaledFloatFrame` will scale the pixel values with 255.0 later
         self.region_size = region_size
 
-        pov_space = self.env.observation_space.spaces['pov']
-        low_dict = {'pov': pov_space.low}
-        high_dict = {'pov': pov_space.high}
+        pov_space = self.env.observation_space.spaces["pov"]
+        low_dict = {"pov": pov_space.low}
+        high_dict = {"pov": pov_space.high}
 
-        if 'compassAngle' in self.env.observation_space.spaces:
-            compass_angle_space = self.env.observation_space.spaces['compassAngle']
-            low_dict['compassAngle'] = compass_angle_space.low
-            high_dict['compassAngle'] = compass_angle_space.high
+        if "compassAngle" in self.env.observation_space.spaces:
+            compass_angle_space = self.env.observation_space.spaces["compassAngle"]
+            low_dict["compassAngle"] = compass_angle_space.low
+            high_dict["compassAngle"] = compass_angle_space.high
 
-        if 'inventory' in self.env.observation_space.spaces:
-            inventory_space = self.env.observation_space.spaces['inventory']
-            low_dict['inventory'] = {}
-            high_dict['inventory'] = {}
+        if "inventory" in self.env.observation_space.spaces:
+            inventory_space = self.env.observation_space.spaces["inventory"]
+            low_dict["inventory"] = {}
+            high_dict["inventory"] = {}
             for key in inventory_space.spaces.keys():
-                low_dict['inventory'][key] = inventory_space.spaces[key].low
-                high_dict['inventory'][key] = inventory_space.spaces[key].high
+                low_dict["inventory"][key] = inventory_space.spaces[key].low
+                high_dict["inventory"][key] = inventory_space.spaces[key].high
 
         low = self.observation(low_dict)
         high = self.observation(high_dict)
@@ -173,14 +193,17 @@ class UnifiedObservationWrapper(gym.ObservationWrapper):
         self.observation_space = gym.spaces.Box(low=low, high=high)
 
     def observation(self, observation):
-        obs = observation['pov']
+        obs = observation["pov"]
         pov_dtype = obs.dtype
 
-        if 'compassAngle' in observation:
-            compass_scaled = observation['compassAngle'] / self._compass_angle_scale
-            compass_channel = np.ones(shape=list(obs.shape[:-1]) + [1], dtype=pov_dtype) * compass_scaled
+        if "compassAngle" in observation:
+            compass_scaled = observation["compassAngle"] / self._compass_angle_scale
+            compass_channel = (
+                np.ones(shape=list(obs.shape[:-1]) + [1], dtype=pov_dtype)
+                * compass_scaled
+            )
             obs = np.concatenate([obs, compass_channel], axis=-1)
-        if 'inventory' in observation:
+        if "inventory" in observation:
             assert len(obs.shape[:-1]) == 2
             region_max_height = obs.shape[0]
             region_max_width = obs.shape[1]
@@ -188,16 +211,23 @@ class UnifiedObservationWrapper(gym.ObservationWrapper):
             if min(region_max_height, region_max_width) < rs:
                 raise ValueError("'region_size' is too large.")
             num_element_width = region_max_width // rs
-            inventory_channel = np.zeros(shape=list(obs.shape[:-1]) + [1], dtype=pov_dtype)
-            for idx, key in enumerate(observation['inventory']):
-                item_scaled = np.clip(255 - 255 / (observation['inventory'][key] + 1),  # Inversed
-                                      0, 255)
+            inventory_channel = np.zeros(
+                shape=list(obs.shape[:-1]) + [1], dtype=pov_dtype
+            )
+            for idx, key in enumerate(observation["inventory"]):
+                item_scaled = np.clip(
+                    255 - 255 / (observation["inventory"][key] + 1), 0, 255  # Inversed
+                )
                 item_channel = np.ones(shape=[rs, rs, 1], dtype=pov_dtype) * item_scaled
                 width_low = (idx % num_element_width) * rs
                 height_low = (idx // num_element_width) * rs
                 if height_low + rs > region_max_height:
-                    raise ValueError("Too many elements on 'inventory'. Please decrease 'region_size' of each component")
-                inventory_channel[height_low:(height_low + rs), width_low:(width_low + rs), :] = item_channel
+                    raise ValueError(
+                        "Too many elements on 'inventory'. Please decrease 'region_size' of each component"
+                    )
+                inventory_channel[
+                    height_low : (height_low + rs), width_low : (width_low + rs), :
+                ] = item_channel
             obs = np.concatenate([obs, inventory_channel], axis=-1)
         return obs
 
@@ -208,23 +238,24 @@ class FullObservationSpaceWrapper(gym.ObservationWrapper):
     compassAngle is scaled to be in the interval [-1, 1] and inventory items
     are scaled to be in the interval [0, 1]
     """
+
     def __init__(self, env):
         super().__init__(env)
 
-        pov_space = self.env.observation_space.spaces['pov']
+        pov_space = self.env.observation_space.spaces["pov"]
 
-        low_dict = {'pov': pov_space.low, 'inventory': {}}
-        high_dict = {'pov': pov_space.high, 'inventory': {}}
+        low_dict = {"pov": pov_space.low, "inventory": {}}
+        high_dict = {"pov": pov_space.high, "inventory": {}}
 
-        for obs_name in self.env.observation_space.spaces['inventory'].spaces.keys():
-            obs_space = self.env.observation_space.spaces['inventory'].spaces[obs_name]
-            low_dict['inventory'][obs_name] = obs_space.low
-            high_dict['inventory'][obs_name] = obs_space.high
+        for obs_name in self.env.observation_space.spaces["inventory"].spaces.keys():
+            obs_space = self.env.observation_space.spaces["inventory"].spaces[obs_name]
+            low_dict["inventory"][obs_name] = obs_space.low
+            high_dict["inventory"][obs_name] = obs_space.high
 
-        if 'compassAngle' in self.env.observation_space.spaces:
-            compass_angle_space = self.env.observation_space.spaces['compassAngle']
-            low_dict['compassAngle'] = compass_angle_space.low
-            high_dict['compassAngle'] = compass_angle_space.high
+        if "compassAngle" in self.env.observation_space.spaces:
+            compass_angle_space = self.env.observation_space.spaces["compassAngle"]
+            low_dict["compassAngle"] = compass_angle_space.low
+            high_dict["compassAngle"] = compass_angle_space.high
 
         low = self.observation(low_dict)
         high = self.observation(high_dict)
@@ -234,15 +265,15 @@ class FullObservationSpaceWrapper(gym.ObservationWrapper):
         self.observation_space = gym.spaces.Tuple((pov_space, inventory_space))
 
     def observation(self, observation):
-        frame = observation['pov']
+        frame = observation["pov"]
         inventory = []
 
-        if 'compassAngle' in observation:
-            compass_scaled = observation['compassAngle'] / 180
+        if "compassAngle" in observation:
+            compass_scaled = observation["compassAngle"] / 180
             inventory.append(compass_scaled)
 
-        for obs_name in observation['inventory'].keys():
-            inventory.append(observation['inventory'][obs_name] / 2304)
+        for obs_name in observation["inventory"].keys():
+            inventory.append(observation["inventory"][obs_name] / 2304)
 
         inventory = np.array(inventory)
         return (frame, inventory)
@@ -250,6 +281,7 @@ class FullObservationSpaceWrapper(gym.ObservationWrapper):
 
 class MoveAxisWrapper(gym.ObservationWrapper):
     """Move axes of observation ndarrays."""
+
     def __init__(self, env, source, destination, use_tuple=False):
         if use_tuple:
             assert isinstance(env.observation_space[0], gym.spaces.Box)
@@ -263,26 +295,27 @@ class MoveAxisWrapper(gym.ObservationWrapper):
 
         if self.use_tuple:
             low = self.observation(
-                tuple([space.low for space in self.observation_space]))
+                tuple([space.low for space in self.observation_space])
+            )
             high = self.observation(
-                tuple([space.high for space in self.observation_space]))
+                tuple([space.high for space in self.observation_space])
+            )
             dtype = self.observation_space[0].dtype
             pov_space = gym.spaces.Box(low=low[0], high=high[0], dtype=dtype)
             inventory_space = self.observation_space[1]
-            self.observation_space = gym.spaces.Tuple(
-                (pov_space, inventory_space))
+            self.observation_space = gym.spaces.Tuple((pov_space, inventory_space))
         else:
             low = self.observation(self.observation_space.low)
             high = self.observation(self.observation_space.high)
             dtype = self.observation_space.dtype
-            self.observation_space = gym.spaces.Box(
-                low=low, high=high, dtype=dtype)
+            self.observation_space = gym.spaces.Box(low=low, high=high, dtype=dtype)
 
     def observation(self, observation):
         if self.use_tuple:
             new_observation = list(observation)
             new_observation[0] = np.moveaxis(
-                observation[0], self.source, self.destination)
+                observation[0], self.source, self.destination
+            )
             return tuple(new_observation)
         else:
             return np.moveaxis(observation, self.source, self.destination)
@@ -301,14 +334,26 @@ class GrayScaleWrapper(gym.ObservationWrapper):
         height, width = original_space.shape[0], original_space.shape[1]
 
         # sanity checks
-        ideal_image_space = gym.spaces.Box(low=0, high=255, shape=(height, width, 3), dtype=np.uint8)
+        ideal_image_space = gym.spaces.Box(
+            low=0, high=255, shape=(height, width, 3), dtype=np.uint8
+        )
         if original_space != ideal_image_space:
-            raise ValueError('Image space should be {}, but given {}.'.format(ideal_image_space, original_space))
+            raise ValueError(
+                "Image space should be {}, but given {}.".format(
+                    ideal_image_space, original_space
+                )
+            )
         if original_space.dtype != np.uint8:
-            raise ValueError('Image should `np.uint8` typed, but given {}.'.format(original_space.dtype))
+            raise ValueError(
+                "Image should `np.uint8` typed, but given {}.".format(
+                    original_space.dtype
+                )
+            )
 
         height, width = original_space.shape[0], original_space.shape[1]
-        new_space = gym.spaces.Box(low=0, high=255, shape=(height, width, 1), dtype=np.uint8)
+        new_space = gym.spaces.Box(
+            low=0, high=255, shape=(height, width, 1), dtype=np.uint8
+        )
         if self._key is None:
             self.observation_space = new_space
         else:
@@ -340,7 +385,7 @@ class ClusteredActionWrapper(gym.ActionWrapper):
         self.action_space = gym.spaces.Discrete(len(clusters))
 
     def action(self, action):
-        return {'vector': self._clusters[action]}
+        return {"vector": self._clusters[action]}
 
     def seed(self, seed):
         super().seed(seed)

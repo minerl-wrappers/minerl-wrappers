@@ -14,7 +14,7 @@ DEFAULT_CONFIG = {
         "randomize_action": False,
         "eval_epsilon": 0.001,
         "action_choices": None,
-    }
+    },
 }
 
 
