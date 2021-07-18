@@ -1,7 +1,7 @@
 from typing import Callable, Any
 
-from pfrl_wrappers import wrap_env as pfrl_wrap_env
-from utils import merge_dicts
+from .pfrl_wrappers import wrap_env as pfrl_wrap_env
+from .utils import merge_dicts
 
 DEFAULT_CONFIG = {
     "pfrl": False,
@@ -11,6 +11,7 @@ DEFAULT_CONFIG = {
         "outdir": "results",
         "frame_skip": None,
         "gray_scale": False,
+        "frame_stack": False,
         "randomize_action": False,
         "eval_epsilon": 0.001,
         "action_choices": None,
@@ -48,4 +49,4 @@ def wrap_env(env, wc_config: WrapperConfig):
             pfrl_config["eval_epsilon"],
             pfrl_config["action_choices"],
         )
-    return NotImplementedError
+    raise NotImplementedError()

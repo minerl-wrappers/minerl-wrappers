@@ -1,4 +1,4 @@
-from config import WrapperConfig
+from .config import WrapperConfig
 
 
 def wrap(env, config_file=None, **kwargs):

@@ -1,1 +1,1 @@
-from wrap import wrap
+from .wrap import wrap

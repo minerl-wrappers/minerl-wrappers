@@ -8,7 +8,7 @@ import gym
 import numpy as np
 from gym import spaces
 
-from continuing_time_limit import ContinuingTimeLimit
+from .continuing_time_limit import ContinuingTimeLimit
 
 try:
     import cv2

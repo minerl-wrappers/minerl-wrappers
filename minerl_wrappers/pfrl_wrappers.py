@@ -7,8 +7,8 @@ import gym
 import numpy as np
 import cv2
 
-from pfrl.wrappers import ContinuingTimeLimit, RandomizeAction, Monitor
-from pfrl.wrappers.atari_wrappers import ScaledFloatFrame, LazyFrames
+from .pfrl.wrappers import ContinuingTimeLimit, RandomizeAction, Monitor
+from .pfrl.wrappers.atari_wrappers import ScaledFloatFrame, LazyFrames
 
 cv2.ocl.setUseOpenCL(False)
 logger = getLogger(__name__)
