@@ -16,6 +16,7 @@ poetry install
 ```
 
 ## virtualenv
+Install Python 3.7+
 ```
 virtualenv venv
 source venv/bin/activate
