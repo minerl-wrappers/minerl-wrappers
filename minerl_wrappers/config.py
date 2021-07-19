@@ -3,7 +3,7 @@ from typing import Callable, Any
 import numpy as np
 
 from .pfrl_wrappers import wrap_env as pfrl_2020_wrap_env
-from .utils import merge_dicts
+from .utils import merge_dicts, load_means
 
 DEFAULT_CONFIG = {
     "pfrl_2020": False,
@@ -19,6 +19,8 @@ DEFAULT_CONFIG = {
         "action_choices": None,
     },
 }
+
+CONFLICTING_OPTIONS = ["pfrl_2020"]
 
 
 class WrapperConfig:
@@ -36,6 +38,25 @@ class WrapperConfig:
         return lambda env: wrap_env(env, self.config)
 
     def validate_config(self):
+        count = sum([1 for option in CONFLICTING_OPTIONS if self.config[option]])
+        if count == 0:
+            print("No option selected!")
+            print("Defaulting to pfrl 2020 wrapper settings...")
+            print(
+                "Warning: Default settings may change in the future! "
+                "Please specify your own working wrapper configuration!"
+            )
+            self.config["pfrl_2020"] = True
+            if self.config["pfrl_2020_config"]["action_choices"] is None:
+                print(
+                    "Using pre-generated kmeans actions since action_choices is not specified."
+                )
+                self.config["pfrl_2020_config"]["action_choices"] = load_means()
+        if count > 1:
+            raise ValueError(
+                f"Too many options specified! "
+                f"Please choose only one from {CONFLICTING_OPTIONS}."
+            )
         if self.config["pfrl_2020"]:
             action_choices = self.config["pfrl_2020_config"]["action_choices"]
             if action_choices is None or not isinstance(action_choices, np.ndarray):
@@ -57,4 +78,4 @@ def wrap_env(env, config):
             pfrl_config["eval_epsilon"],
             pfrl_config["action_choices"],
         )
-    raise NotImplementedError()
+    raise NotImplementedError("No wrapper configuration detected.")

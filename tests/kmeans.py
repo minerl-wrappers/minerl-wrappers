@@ -6,7 +6,7 @@ import tqdm
 from sklearn.cluster import KMeans
 
 DEFAULT_KMEANS_FILE = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "data/means.npy"
+    os.path.dirname(os.path.abspath(__file__)), "../minerl_wrappers/data/means.npy"
 )
 
 

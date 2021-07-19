@@ -1,5 +1,11 @@
 import copy
 
+import numpy as np
+
+DEFAULT_KMEANS_FILE = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "./data/means.npy"
+)
+
 
 # copied from ray: https://github.com/ray-project/ray
 def deep_update(
@@ -69,3 +75,7 @@ def merge_dicts(d1, d2):
     merged = copy.deepcopy(d1)
     deep_update(merged, d2, True, [])
     return merged
+
+
+def load_means(path=DEFAULT_KMEANS_FILE):
+    return np.load(path)
