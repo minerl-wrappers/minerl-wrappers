@@ -1,3 +1,11 @@
+"""
+July 19th, 2021
+Copied from:
+https://github.com/keisuke-nakata/minerl2020_submission/blob/69e837a98e446bb06e5755a9855eef5cd45bd1a8/mod/env_wrappers.py
+https://github.com/keisuke-nakata/minerl2020_submission/blob/69e837a98e446bb06e5755a9855eef5cd45bd1a8/mod/dqn_family.py
+TODO: update to combined introduction and research tracks
+https://github.com/s-shiroshita/minerl2020_sqil_submission/blob/e5cc2c70a3b85272c8c359107fc3a5e5d53e13a1/mod/env_wrappers.py
+"""
 import copy
 from logging import getLogger
 from collections import deque
