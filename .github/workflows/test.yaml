@@ -15,6 +15,7 @@ jobs:
           - windows-latest
           - ubuntu-latest
         python-version: [3.7, 3.8]
+        pytest-path: [tests/test_pfrl_2020_wrappers.py, tests/test_wrap.py]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -31,7 +32,7 @@ jobs:
           poetry install
         shell: bash
       - name: Test with pytest
-        run: poetry run pytest
+        run: poetry run pytest ${{ matrix.pytest-path }}
         shell: bash
       - name: Lint with black
         run: poetry run black --check --diff --color .
