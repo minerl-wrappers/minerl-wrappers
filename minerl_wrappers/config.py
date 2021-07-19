@@ -2,7 +2,7 @@ from typing import Callable, Any
 
 import numpy as np
 
-from .pfrl_wrappers import wrap_env as pfrl_2020_wrap_env
+from .pfrl_2020_wrappers import wrap_env as pfrl_2020_wrap_env
 from .utils import merge_dicts, load_means
 
 DEFAULT_CONFIG = {
