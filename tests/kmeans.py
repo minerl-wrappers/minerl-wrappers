@@ -7,6 +7,9 @@ from sklearn.cluster import KMeans
 
 
 def generate_kmeans(env_id, n_clusters, random_state):
+    """
+    This is a very memory intensive task so would recommend caching the results
+    """
     print(f"loading data...")
     dat = minerl.data.make(env_id)
     act_vectors = []
@@ -28,14 +31,20 @@ def generate_kmeans(env_id, n_clusters, random_state):
     return kmeans
 
 
-def load_means():
-    path = "./data/means.npy"
+def load_means(
+    path="./data/means.npy",
+    env_id="MineRLObtainDiamondDenseVectorObf-v0",
+    n_clusters=30,
+    random_state=1337,
+):
     if not os.path.exists(path):
         kmeans = generate_kmeans(
-            env_id="MineRLObtainDiamondDenseVectorObf-v0",
-            n_clusters=30,
-            random_state=1337,
+            env_id=env_id,
+            n_clusters=n_clusters,
+            random_state=random_state,
         )
+        if not os.path.exists(os.path.dirname(path)):
+            os.makedirs(os.path.dirname(path))
         np.save(path, kmeans.cluster_centers_)
     means = np.load(path)
     return means
