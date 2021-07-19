@@ -59,8 +59,8 @@ class WrapperConfig:
             )
         if self.config["pfrl_2020"]:
             action_choices = self.config["pfrl_2020_config"]["action_choices"]
-            if action_choices is None or not isinstance(action_choices, np.ndarray):
-                raise ValueError("action_choices must be a numpy array!")
+            if not (action_choices is None or isinstance(action_choices, np.ndarray)):
+                raise ValueError("action_choices must be None or a numpy array!")
 
 
 def wrap_env(env, config):

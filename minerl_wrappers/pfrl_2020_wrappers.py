@@ -59,7 +59,8 @@ def wrap_env(
     if frame_stack is not None and frame_stack > 0:
         env = FrameStack(env, frame_stack, channel_order="chw")
 
-    env = ClusteredActionWrapper(env, clusters=action_choices)
+    if action_choices is not None:
+        env = ClusteredActionWrapper(env, clusters=action_choices)
 
     if randomize_action:
         env = RandomizeAction(env, eval_epsilon)

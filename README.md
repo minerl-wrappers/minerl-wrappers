@@ -21,11 +21,11 @@
 ## Wrap arguments
 - `pfrl_2020=False`: set `True` to use the pfrl 2020 wrappers
 - `pfrl_2020_config`: dictionary configuration for pfrl wrappers
-  - `test=False`: not used
-  - `monitor`: pfrl specific logging
-  - `outdir`: used with monitor
-  - `frame_skip`: number of frames to skip
-  - `gray_scale`: change frames from rgb to grayscale
+  - `test=False`: used in monitor
+  - `monitor=False`: pfrl specific logging
+  - `outdir="results"`: used with monitor
+  - `frame_skip=None`: number of frames to skip
+  - `gray_scale=False`: change frames from rgb to grayscale
   - `frame_stack=None`: concatenate frames over time
   - `randomize_action=False`: if True, do random action with eval_epsilon probability 
   - `eval_epsilon=0.001`: in effect only if `randomize_action=True`
