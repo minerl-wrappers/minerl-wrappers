@@ -1,6 +1,8 @@
+import os
 from typing import Callable, Any
 
 import numpy as np
+import yaml
 
 from .pfrl_2020_wrappers import wrap_env as pfrl_2020_wrap_env
 from .utils import merge_dicts, load_means
@@ -31,7 +33,10 @@ class WrapperConfig:
         return self.get_wrapper()
 
     def from_config(self, config_file) -> Callable[[Any], Any]:
-        raise NotImplementedError
+        with open(config_file) as f:
+            config = yaml.safe_load(f)
+        self.config = merge_dicts(self.config, config)
+        return self.get_wrapper()
 
     def get_wrapper(self) -> Callable[[Any], Any]:
         self.validate_config()
@@ -59,6 +64,9 @@ class WrapperConfig:
             )
         if self.config["pfrl_2020"]:
             action_choices = self.config["pfrl_2020_config"]["action_choices"]
+            if isinstance(action_choices, str) and os.path.exists(action_choices):
+                action_choices = load_means(action_choices)
+                self.config["pfrl_2020_config"]["action_choices"] = action_choices
             if not (action_choices is None or isinstance(action_choices, np.ndarray)):
                 raise ValueError("action_choices must be None or a numpy array!")
 

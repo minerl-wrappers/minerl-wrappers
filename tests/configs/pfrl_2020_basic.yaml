@@ -1,0 +1,4 @@
+pfrl_2020: true
+pfrl_2020_config:
+  frame_skip: 4
+  action_choices: ./minerl_wrappers/data/means.npy

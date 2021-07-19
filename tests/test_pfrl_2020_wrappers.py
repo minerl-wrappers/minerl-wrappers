@@ -1,4 +1,6 @@
 import logging
+import os
+from pathlib import Path
 
 import gym
 
@@ -78,3 +80,8 @@ def config_validation(env):
         logging.debug("Intentionally caught error")
     config["pfrl_2020_config"]["action_choices"] = load_means()
     wrap(env, **config)
+    os.chdir(Path(__file__).absolute().parent.parent)
+    config_file = str(
+        Path(__file__).absolute().parent.joinpath("./configs/pfrl_2020_basic.yaml")
+    )
+    wrap(env, config_file=config_file)
