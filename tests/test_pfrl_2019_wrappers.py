@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 def test_pfrl_2019_wrappers():
-    env = gym.make("MineRLObtainDiamondDenseVectorObf-v0")
+    env = gym.make("MineRLObtainDiamondDense-v0")
     config_validation(env)
     logging.debug("Testing default wrapper")
     wrapped_env = wrap(env)
