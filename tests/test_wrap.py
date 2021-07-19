@@ -54,5 +54,7 @@ def build_and_run_step(gym_id, config_file=None, **kwargs):
 def test_diamond_competition_envs(gym_id):
     logging.debug("Loading kmeans")
     means = load_means()
-    build_and_run_step(gym_id, pfrl=True, pfrl_config={"action_choices": means})
+    build_and_run_step(
+        gym_id, pfrl_2020=True, pfrl_2020_config={"action_choices": means}
+    )
     logging.debug("Finished test!")

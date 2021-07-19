@@ -1,17 +1,19 @@
 from typing import Callable, Any
 
-from .pfrl_wrappers import wrap_env as pfrl_wrap_env
+import numpy as np
+
+from .pfrl_wrappers import wrap_env as pfrl_2020_wrap_env
 from .utils import merge_dicts
 
 DEFAULT_CONFIG = {
-    "pfrl": False,
-    "pfrl_config": {
+    "pfrl_2020": False,
+    "pfrl_2020_config": {
         "test": False,
         "monitor": False,
         "outdir": "results",
         "frame_skip": None,
         "gray_scale": False,
-        "frame_stack": False,
+        "frame_stack": None,
         "randomize_action": False,
         "eval_epsilon": 0.001,
         "action_choices": None,
@@ -30,14 +32,20 @@ class WrapperConfig:
         raise NotImplementedError
 
     def get_wrapper(self) -> Callable[[Any], Any]:
-        return lambda env: wrap_env(env, self)
+        self.validate_config()
+        return lambda env: wrap_env(env, self.config)
+
+    def validate_config(self):
+        if self.config["pfrl_2020"]:
+            action_choices = self.config["pfrl_2020_config"]["action_choices"]
+            if action_choices is None or not isinstance(action_choices, np.ndarray):
+                raise ValueError("action_choices must be a numpy array!")
 
 
-def wrap_env(env, wc_config: WrapperConfig):
-    config = wc_config.config
-    if config["pfrl"]:
-        pfrl_config = config["pfrl_config"]
-        return pfrl_wrap_env(
+def wrap_env(env, config):
+    if config["pfrl_2020"]:
+        pfrl_config = config["pfrl_2020_config"]
+        return pfrl_2020_wrap_env(
             env,
             pfrl_config["test"],
             pfrl_config["monitor"],

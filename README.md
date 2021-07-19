@@ -19,14 +19,14 @@
 - pfrl wrappers: an assortment of wrappers ported over from the [2020 PfN minerl baselines](https://github.com/minerllabs/baselines/tree/master/2020)
 
 ## Wrap arguments
-- `pfrl=False`: set `True` to use the pfrl wrappers
-- `pfrl_config`: dictionary configuration for pfrl wrappers
+- `pfrl_2020=False`: set `True` to use the pfrl 2020 wrappers
+- `pfrl_2020_config`: dictionary configuration for pfrl wrappers
   - `test=False`: not used
-  - `monitor`
-  - `outdir`
-  - `frame_skip`
-  - `gray_scale`
-  - `frame_stack`
+  - `monitor`: pfrl specific logging
+  - `outdir`: used with monitor
+  - `frame_skip`: number of frames to skip
+  - `gray_scale`: change frames from rgb to grayscale (single channel)
+  - `frame_stack=None`: concatenate frames over time
   - `randomize_action`
   - `eval_epsilon`
   - `action_choices`
@@ -67,8 +67,8 @@ env = wrap(env)
 Change which wrappers to apply by supplying config arguments:
 ```python
 config = {
-  "pfrl": True,
-  "pfrl_config": {
+  "pfrl_2020": True,
+  "pfrl_2020_config": {
     "frame_skip": 4,
     "frame_stack": 4,
   }
