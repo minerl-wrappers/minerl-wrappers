@@ -13,7 +13,17 @@ jobs:
       matrix:
         python-version: [3.7]
         pytest-args:
+          - tests/test_pfrl_2019_wrappers.py
           - tests/test_pfrl_2020_wrappers.py
+          - -k MineRLTreechop-v0
+          - -k MineRLNavigate-v0
+          - -k MineRLNavigateDense-v0
+          - -k MineRLNavigateExtreme-v0
+          - -k MineRLNavigateExtremeDense-v0
+          - -k MineRLObtainDiamond-v0
+          - -k MineRLObtainDiamondDense-v0
+          - -k MineRLObtainIronPickaxe-v0
+          - -k MineRLObtainIronPickaxeDense-v0
           - -k MineRLTreechopVectorObf-v0
           - -k MineRLNavigateVectorObf-v0
           - -k MineRLNavigateDenseVectorObf-v0
