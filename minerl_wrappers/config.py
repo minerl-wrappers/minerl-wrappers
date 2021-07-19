@@ -5,9 +5,26 @@ import numpy as np
 import yaml
 
 from .pfrl_2020_wrappers import wrap_env as pfrl_2020_wrap_env
-from .utils import merge_dicts, load_means
+from .pfrl_2019_wrappers import wrap_env as pfrl_2019_wrap_env
+from .utils import merge_dicts, load_means, get_env_id
 
 DEFAULT_CONFIG = {
+    "pfrl_2019": False,
+    "pfrl_2019_config": {
+        "test": False,
+        "monitor": False,
+        "outdir": "results",
+        "frame_skip": None,
+        "gray_scale": False,
+        "frame_stack": None,
+        "disable_action_prior": False,
+        "always_keys": None,
+        "reverse_keys": None,
+        "exclude_keys": None,
+        "exclude_noop": None,
+        "randomize_action": False,
+        "eval_epsilon": 0.001,
+    },
     "pfrl_2020": False,
     "pfrl_2020_config": {
         "test": False,
@@ -22,7 +39,7 @@ DEFAULT_CONFIG = {
     },
 }
 
-CONFLICTING_OPTIONS = ["pfrl_2020"]
+CONFLICTING_OPTIONS = ["pfrl_2019", "pfrl_2020"]
 
 
 class WrapperConfig:
@@ -72,7 +89,26 @@ class WrapperConfig:
 
 
 def wrap_env(env, config):
-    if config["pfrl_2020"]:
+    if config["pfrl_2019"]:
+        pfrl_config = config["pfrl_2019_config"]
+        return pfrl_2019_wrap_env(
+            env,
+            pfrl_config["test"],
+            get_env_id(env),
+            pfrl_config["monitor"],
+            pfrl_config["outdir"],
+            pfrl_config["frame_skip"],
+            pfrl_config["gray_scale"],
+            pfrl_config["frame_stack"],
+            pfrl_config["disable_action_prior"],
+            pfrl_config["always_keys"],
+            pfrl_config["reverse_keys"],
+            pfrl_config["exclude_keys"],
+            pfrl_config["exclude_noop"],
+            pfrl_config["randomize_action"],
+            pfrl_config["eval_epsilon"],
+        )
+    elif config["pfrl_2020"]:
         pfrl_config = config["pfrl_2020_config"]
         return pfrl_2020_wrap_env(
             env,

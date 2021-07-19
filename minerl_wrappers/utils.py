@@ -80,3 +80,7 @@ def merge_dicts(d1, d2):
 
 def load_means(path=DEFAULT_KMEANS_FILE):
     return np.load(path)
+
+
+def get_env_id(env):
+    return env.spec.id
