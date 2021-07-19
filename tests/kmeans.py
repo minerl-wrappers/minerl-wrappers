@@ -5,6 +5,10 @@ import numpy as np
 import tqdm
 from sklearn.cluster import KMeans
 
+DEFAULT_KMEANS_FILE = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "data/means.npy"
+)
+
 
 def generate_kmeans(env_id, n_clusters, random_state):
     """
@@ -32,7 +36,7 @@ def generate_kmeans(env_id, n_clusters, random_state):
 
 
 def load_means(
-    path="./data/means.npy",
+    path=DEFAULT_KMEANS_FILE,
     env_id="MineRLObtainDiamondDenseVectorObf-v0",
     n_clusters=30,
     random_state=1337,
