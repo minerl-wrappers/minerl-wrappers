@@ -3,7 +3,16 @@
 `minerl-wrapper` compiles common wrappers and standardizes code for reproducibility in the MineRL environment!
 
 # Currently Supported Environments
-
+- MineRL Basic Environments
+  - [`MineRLTreechop-v0`](https://minerl.readthedocs.io/en/latest/environments/index.html#minerltreechop-v0)
+  - [`MineRLNavigate-v0`](https://minerl.readthedocs.io/en/latest/environments/index.html#minerlnavigate-v0)
+  - [`MineRLNavigateDense-v0`](https://minerl.readthedocs.io/en/latest/environments/index.html#minerlnavigatedense-v0)
+  - [`MineRLNavigateExtreme-v0`](https://minerl.readthedocs.io/en/latest/environments/index.html#minerlnavigateextreme-v0)
+  - [`MineRLNavigateExtremeDense-v0`](https://minerl.readthedocs.io/en/latest/environments/index.html#minerlnavigateextremedense-v0)
+  - [`MineRLObtainDiamond-v0`](https://minerl.readthedocs.io/en/latest/environments/index.html#minerlobtaindiamond-v0)
+  - [`MineRLObtainDiamondDense-v0`](https://minerl.readthedocs.io/en/latest/environments/index.html#minerlobtaindiamonddense-v0)
+  - [`MineRLObtainIronPickaxe-v0`](https://minerl.readthedocs.io/en/latest/environments/index.html#minerlobtainironpickaxe-v0)
+  - [`MineRLObtainIronPickaxeDense-v0`](https://minerl.readthedocs.io/en/latest/environments/index.html#minerlobtainironpickaxedense-v0)
 - MineRL Diamond Competition Environments
   - [`MineRLTreechopVectorObf-v0`](https://minerl.readthedocs.io/en/latest/environments/index.html#minerltreechopvectorobf-v0)
   - [`MineRLNavigateVectorObf-v0`](https://minerl.readthedocs.io/en/latest/environments/index.html#minerlnavigatevectorobf-v0)
@@ -30,6 +39,39 @@
   - `randomize_action=False`: if True, do random action with eval_epsilon probability 
   - `eval_epsilon=0.001`: in effect only if `randomize_action=True`
   - `action_choices=None`: preselected actions to discretize vector action spaces. Often provided with kmeans vectors
+
+```python
+DEFAULT_CONFIG = {
+    "pfrl_2019": False,
+    "pfrl_2019_config": {
+        "test": False,
+        "monitor": False,
+        "outdir": "results",
+        "frame_skip": None,
+        "gray_scale": False,
+        "frame_stack": None,
+        "disable_action_prior": False,
+        "always_keys": None,
+        "reverse_keys": None,
+        "exclude_keys": None,
+        "exclude_noop": False,
+        "randomize_action": False,
+        "eval_epsilon": 0.001,
+    },
+    "pfrl_2020": False,
+    "pfrl_2020_config": {
+        "test": False,
+        "monitor": False,
+        "outdir": "results",
+        "frame_skip": None,
+        "gray_scale": False,
+        "frame_stack": None,
+        "randomize_action": False,
+        "eval_epsilon": 0.001,
+        "action_choices": None,
+    },
+}
+```
 
 # Install
 
