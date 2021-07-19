@@ -6,7 +6,7 @@ import gym
 
 from minerl_wrappers import wrap
 from minerl_wrappers.utils import load_means
-from test_diamond_competition import reset_and_sample_episode
+from tests.common import reset_and_sample_episode
 
 logging.basicConfig(level=logging.DEBUG)
 
