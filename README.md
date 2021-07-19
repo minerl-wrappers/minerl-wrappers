@@ -15,6 +15,22 @@
   - [`MineRLObtainIronPickaxeVectorObf-v0`](https://minerl.readthedocs.io/en/latest/environments/index.html#minerlobtainironpickaxevectorobf-v0)
   - [`MineRLObtainIronPickaxeDenseVectorObf-v0`](https://minerl.readthedocs.io/en/latest/environments/index.html#minerlobtainironpickaxedensevectorobf-v0)
 
+# Wappers
+- pfrl wrappers: an assortment of wrappers ported over from the [2020 PfN minerl baselines](https://github.com/minerllabs/baselines/tree/master/2020)
+
+## Wrap arguments
+- `pfrl=False`: set `True` to use the pfrl wrappers
+- `pfrl_config`: dictionary configuration for pfrl wrappers
+  - `test=False`: not used
+  - `monitor`
+  - `outdir`
+  - `frame_skip`
+  - `gray_scale`
+  - `frame_stack`
+  - `randomize_action`
+  - `eval_epsilon`
+  - `action_choices`
+
 # Install
 
 ## Poetry Installation
@@ -34,6 +50,30 @@ Install Python 3.7+
 virtualenv venv
 source venv/bin/activate
 pip install requirements.txt
+```
+
+# Use
+
+To quickly test out the wrappers try:
+```python
+import gym
+import minerl
+from minerl_wrappers import wrap
+
+env = gym.make("MineRLObtainDiamondDenseVectorObf-v0")
+env = wrap(env)
+```
+
+Change which wrappers to apply by supplying config arguments:
+```python
+config = {
+  "pfrl": True,
+  "pfrl_config": {
+    "frame_skip": 4,
+    "frame_stack": 4,
+  }
+}
+env = wrap(env, **config)
 ```
 
 # Develop
