@@ -8,7 +8,7 @@ from minerl.herobraine.envs import (
 )
 
 from minerl_wrappers import wrap
-from tests.kmeans import load_means
+from minerl_wrappers.utils import load_means
 
 BASIC_IDS = [env_spec.name for env_spec in BASIC_ENV_SPECS]
 DIAMOND_COMPETITION_IDS = [env_spec.name for env_spec in COMPETITION_ENV_SPECS]
@@ -58,3 +58,52 @@ def test_diamond_competition_envs(gym_id):
         gym_id, pfrl_2020=True, pfrl_2020_config={"action_choices": means}
     )
     logging.debug("Finished test!")
+
+
+def test_pfrl_2020_wrappers():
+    env = gym.make("MineRLObtainDiamondDenseVectorObf-v0")
+    means = load_means()
+    # test default wrapper
+    wrapped_env = wrap(env)
+    reset_and_sample_episode(wrapped_env, 4)
+    # test preset action choices
+    config = {
+        "pfrl_2020": True,
+        "pfrl_2020_config": {
+            "action_choices": means,
+        },
+    }
+    wrapped_env = wrap(env, **config)
+    reset_and_sample_episode(wrapped_env, 4)
+    # test frame_skip and frame_stack
+    config = {
+        "pfrl_2020": True,
+        "pfrl_2020_config": {
+            "action_choices": means,
+            "frame_skip": 4,
+            "frame_stack": 4,
+        },
+    }
+    wrapped_env = wrap(env, **config)
+    reset_and_sample_episode(wrapped_env, 4)
+    # test gray_scale
+    config = {
+        "pfrl_2020": True,
+        "pfrl_2020_config": {
+            "action_choices": means,
+            "gray_scale": True,
+        },
+    }
+    wrapped_env = wrap(env, **config)
+    reset_and_sample_episode(wrapped_env, 4)
+    # test random_action
+    config = {
+        "pfrl_2020": True,
+        "pfrl_2020_config": {
+            "action_choices": means,
+            "random_action": True,
+            "eval_epsilon": 1,
+        },
+    }
+    wrapped_env = wrap(env, **config)
+    reset_and_sample_episode(wrapped_env, 4)

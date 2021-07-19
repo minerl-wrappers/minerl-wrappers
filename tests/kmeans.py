@@ -35,7 +35,7 @@ def generate_kmeans(env_id, n_clusters, random_state):
     return kmeans
 
 
-def load_means(
+def test_load_means(
     path=DEFAULT_KMEANS_FILE,
     env_id="MineRLObtainDiamondDenseVectorObf-v0",
     n_clusters=30,
@@ -55,4 +55,4 @@ def load_means(
 
 
 if __name__ == "__main__":
-    load_means()
+    test_load_means()
