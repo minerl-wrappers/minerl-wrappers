@@ -1,6 +1,10 @@
 import gym
 import pytest
-from minerl.herobraine.envs import BASIC_ENV_SPECS, COMPETITION_ENV_SPECS, BASALT_COMPETITION_ENV_SPECS
+from minerl.herobraine.envs import (
+    BASIC_ENV_SPECS,
+    COMPETITION_ENV_SPECS,
+    BASALT_COMPETITION_ENV_SPECS,
+)
 
 from minerl_wrappers import wrap
 
