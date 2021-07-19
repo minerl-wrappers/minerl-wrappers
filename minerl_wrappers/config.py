@@ -21,7 +21,7 @@ DEFAULT_CONFIG = {
         "always_keys": None,
         "reverse_keys": None,
         "exclude_keys": None,
-        "exclude_noop": None,
+        "exclude_noop": False,
         "randomize_action": False,
         "eval_epsilon": 0.001,
     },
