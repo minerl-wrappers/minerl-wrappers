@@ -8,17 +8,26 @@ on:
 
 jobs:
   ci:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os:
-          - windows-latest
-          - ubuntu-latest
-        python-version: [3.7, 3.8]
-        pytest-path: [tests/test_pfrl_2020_wrappers.py, tests/test_diamond_competition.py]
-        exclude:
-          - os: windows-latest
-            pytest-path: tests/test_diamond_competition.py
+        python-version: [3.7]
+        pytest-args:
+          - tests/test_pfrl_2020_wrappers.py
+          - -k MineRLTreechopVectorObf-v0
+          - -k MineRLNavigateVectorObf-v0
+          - -k MineRLNavigateDenseVectorObf-v0
+          - -k MineRLNavigateExtremeVectorObf-v0
+          - -k MineRLNavigateExtremeDenseVectorObf-v0
+          - -k MineRLObtainDiamondVectorObf-v0
+          - -k MineRLObtainDiamondDenseVectorObf-v0
+          - -k MineRLObtainIronPickaxeVectorObf-v0
+          - -k MineRLObtainIronPickaxeDenseVectorObf-v0
+        include:
+          - pytest-args: tests/test_pfrl_2020_wrappers.py
+            python-version: 3.8
+          - pytest-args: tests/test_pfrl_2020_wrappers.py
+            python-version: 3.9
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -35,7 +44,7 @@ jobs:
           poetry install
         shell: bash
       - name: Test with pytest
-        run: poetry run pytest ${{ matrix.pytest-path }}
+        run: poetry run pytest ${{ matrix.pytest-args }}
         shell: bash
       - name: Lint with black
         run: poetry run black --check --diff --color .
