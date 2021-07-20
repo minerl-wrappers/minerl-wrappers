@@ -2,7 +2,7 @@
 
 [![codecov](https://codecov.io/gh/juliusfrost/minerl-wrappers/branch/dev/graph/badge.svg?token=e2upyvWceq)](https://codecov.io/gh/juliusfrost/minerl-wrappers)
 
-`minerl-wrapper` compiles common wrappers and standardizes code for reproducibility in the MineRL environment!
+`minerl-wrapper` compiles common wrappers and standardizes code for reproducibility in the [MineRL environment](https://minerl.readthedocs.io/en/latest/index.html)!
 
 # Currently Supported Environments
 - MineRL Basic Environments
@@ -28,6 +28,7 @@
 
 # Wappers
 - pfrl wrappers: an assortment of wrappers ported over from the [2020 PfN minerl baselines](https://github.com/minerllabs/baselines/tree/master/2020)
+and [2019 PfN minerl baselines](https://github.com/minerllabs/baselines/tree/master/2019)
 
 ## Wrap arguments
 For documentation see wrapper files:  
@@ -69,24 +70,48 @@ DEFAULT_CONFIG = {
 
 # Install
 
-## Poetry Installation
+Make sure you have Java JDK 8 installed as the only Java version for MineRL.
 
-Install [poetry](https://python-poetry.org/docs/#installation)
-
-Make sure you have java jdk 8 installed as the only version.
-
-To create a virtual environment with all dependencies:
-```
-poetry install --no-dev
+Install directly from git:
+```bash
+pip install git+https://github.com/juliusfrost/minerl-wrappers.git
 ```
 
-## virtualenv
-Install Python 3.7+
+## Clone and Install
+```bash
+git clone https://github.com/juliusfrost/minerl-wrappers.git
+cd minerl-wrappers
 ```
-virtualenv venv
+
+### Use your own virtual environment
+
+#### virtualenv
+Installed Python 3.7+
+```bash
+python3 -m virtualenv venv
 source venv/bin/activate
-pip install requirements.txt
 ```
+
+#### conda
+Install Anaconda or Miniconda
+```bash
+conda create --name minerl-wrappers python=3.7
+conda activate minerl-wrappers
+```
+
+### Install dependencies
+1. Install dependencies with pip:
+  ```bash
+  # install fixed requirements
+  pip install -r requirements.txt
+  # set the minerl-wrappers module for imports
+  export PYTHONPATH=$PYTHONPATH:$(pwd)
+  ```
+2. Install dependencies with [`poetry`](https://python-poetry.org/docs/#installation) into your virtual environment:
+  ```bash
+  # this also installs minerl-wrappers as a package
+  poetry install --no-dev
+  ```
 
 # Use
 
@@ -97,7 +122,7 @@ import minerl
 from minerl_wrappers import wrap
 
 env = gym.make("MineRLObtainDiamondDenseVectorObf-v0")
-env = wrap(env)
+env = wrap(env) # plug this into your rl algorithm
 ```
 
 Change which wrappers to apply by supplying config arguments:

@@ -1,12 +1,21 @@
 # Develop
 
-For development, I highly recommend using `poetry` to install your dev environment:
-```
+For development, I highly recommend using `poetry` to install your dev environment:### Poetry Installation
+
+Install [`poetry`](https://python-poetry.org/docs/#installation).
+
+```bash
+# To create a virtual environment with all dependencies:
 poetry install
+# To do things in the virtual environments
+poetry shell
 ```
 
+If for some reason you cannot use `poetry`, install use `pip install -r requirements-dev.txt` into your virtual environment.
+Be cautious adding dependencies when editing `minerl-wrappers` code and only do so through `poetry`.
+
 ## Formatting
-Format your code with `poetry run black minerl_wrappers`.  
+Format your code with `black .` or `poetry run black .`.  
 
 ## Dependencies
 
