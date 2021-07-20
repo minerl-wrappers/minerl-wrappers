@@ -66,6 +66,8 @@ def wrap_env(
         env = FrameSkip(env, skip=frame_skip)
     if gray_scale:
         env = GrayScaleWrapper(env, dict_space_key="pov")
+    # minerl dict space was updated and broke previous wrappers
+    env = CompassBackwardsCompatibilityWrapper(env)
     if env_id.startswith("MineRLNavigate"):
         env = PoVWithCompassAngleWrapper(env)
     else:
@@ -282,6 +284,34 @@ class ObtainPoVWrapper(gym.ObservationWrapper):
 
     def observation(self, observation):
         return observation["pov"]
+
+
+class CompassBackwardsCompatibilityWrapper(gym.ObservationWrapper):
+    def __init__(self, env):
+        super().__init__(env)
+        self.active = False
+        if (
+            "compass" in self.observation_space.spaces
+            and "angle" in self.observation_space["compass"].spaces
+        ):
+            self.active = True
+            compass_space = self.observation_space["compass"]["angle"]
+            spaces = {"compassAngle": compass_space}
+            for key, val in self.observation_space.spaces.items():
+                if key != "compass":
+                    spaces[key] = val
+            self.observation_space = gym.spaces.Dict(spaces=spaces)
+
+    def observation(self, observation):
+        if self.active:
+            compass_angle = observation["compass"]["angle"]
+            obs = {"compassAngle": compass_angle}
+            for key, val in observation.items():
+                if key != "compass":
+                    obs[key] = val
+            return obs
+        else:
+            return observation
 
 
 class PoVWithCompassAngleWrapper(gym.ObservationWrapper):
