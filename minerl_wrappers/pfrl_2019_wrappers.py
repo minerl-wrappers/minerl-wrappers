@@ -289,7 +289,7 @@ class ObtainPoVWrapper(gym.ObservationWrapper):
 class CompassBackwardsCompatibilityWrapper(gym.ObservationWrapper):
     def __init__(self, env):
         super().__init__(env)
-        if "compass" in self.observation_space:
+        if "compass" in self.observation_space.spaces:
             compass_space = self.observation_space["compass"]["angle"]
             spaces = {"compassAngle": compass_space}
             for key, val in self.observation_space.spaces.items():
