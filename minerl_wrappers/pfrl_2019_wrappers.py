@@ -291,21 +291,19 @@ class CompassBackwardsCompatibilityWrapper(gym.ObservationWrapper):
         super().__init__(env)
         if "compass" in self.observation_space:
             compass_space = self.observation_space["compass"]["angle"]
-            high = {"compassAngle": compass_space.high}
-            low = {"compassAngle": compass_space.low}
+            spaces = {"compassAngle": compass_space}
             for key, val in self.observation_space.spaces.items():
                 if key != "compass":
-                    high[key] = val.high
-                    low[key] = val.low
-            self.observation_space = gym.spaces.Dict(high=high, low=low)
+                    spaces[key] = val
+            self.observation_space = gym.spaces.Dict(spaces=spaces)
 
     def observation(self, observation):
         if "compass" in observation:
             compass_angle = observation["compass"]["angle"]
             obs = {"compassAngle": compass_angle}
-            for key in observation:
+            for key, val in observation.items():
                 if key != "compass":
-                    obs[key] = observation["key"]
+                    obs[key] = val
             return obs
 
 
