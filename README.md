@@ -1,5 +1,7 @@
 # minerl-wrappers
 
+[![codecov](https://codecov.io/gh/juliusfrost/minerl-wrappers/branch/dev/graph/badge.svg?token=e2upyvWceq)](https://codecov.io/gh/juliusfrost/minerl-wrappers)
+
 `minerl-wrapper` compiles common wrappers and standardizes code for reproducibility in the MineRL environment!
 
 # Currently Supported Environments
@@ -28,17 +30,9 @@
 - pfrl wrappers: an assortment of wrappers ported over from the [2020 PfN minerl baselines](https://github.com/minerllabs/baselines/tree/master/2020)
 
 ## Wrap arguments
-- `pfrl_2020=False`: set `True` to use the pfrl 2020 wrappers
-- `pfrl_2020_config`: dictionary configuration for pfrl wrappers
-  - `test=False`: used in monitor
-  - `monitor=False`: pfrl specific logging
-  - `outdir="results"`: used with monitor
-  - `frame_skip=None`: number of frames to skip
-  - `gray_scale=False`: change frames from rgb to grayscale
-  - `frame_stack=None`: concatenate frames over time
-  - `randomize_action=False`: if True, do random action with eval_epsilon probability 
-  - `eval_epsilon=0.001`: in effect only if `randomize_action=True`
-  - `action_choices=None`: preselected actions to discretize vector action spaces. Often provided with kmeans vectors
+For documentation see wrapper files:  
+[pfrl_2019_wrappers.py](https://github.com/juliusfrost/minerl-wrappers/blob/dev/minerl_wrappers/pfrl_2019_wrappers.py)  
+[pfrl_2020_wrappers.py](https://github.com/juliusfrost/minerl-wrappers/blob/dev/minerl_wrappers/pfrl_2020_wrappers.py)
 
 ```python
 DEFAULT_CONFIG = {
@@ -83,7 +77,7 @@ Make sure you have java jdk 8 installed as the only version.
 
 To create a virtual environment with all dependencies:
 ```
-poetry install
+poetry install --no-dev
 ```
 
 ## virtualenv
@@ -118,12 +112,8 @@ config = {
 env = wrap(env, **config)
 ```
 
-# Develop
-
-Format your code with `poetry run black minerl_wrappers`.  
-
-## Dependencies
-
-Upgrade poetry packages with `poetry update`.
-
-Generate precise requirements with `poetry export -f requirements.txt --output requirements.txt`.
+# Contributing
+It is highly encouraged to contribute wrappers that worked well for you!
+Just create a [Pull Request](https://github.com/juliusfrost/minerl-wrappers/pulls) on this repository, 
+and we'll work together to get it merged!
+Read `README-dev.md` for contributing guidelines and more details!
