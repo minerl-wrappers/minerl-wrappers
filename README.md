@@ -1,7 +1,5 @@
 # minerl-wrappers
 
-[![codecov](https://codecov.io/gh/juliusfrost/minerl-wrappers/branch/dev/graph/badge.svg?token=e2upyvWceq)](https://codecov.io/gh/juliusfrost/minerl-wrappers)
-
 `minerl-wrapper` compiles common wrappers and standardizes code for reproducibility in the [MineRL environment](https://minerl.readthedocs.io/en/latest/index.html)!
 
 # Currently Supported Environments
@@ -32,8 +30,8 @@ and [2019 PfN minerl baselines](https://github.com/minerllabs/baselines/tree/mas
 
 ## Wrap arguments
 For documentation see wrapper files:  
-[pfrl_2019_wrappers.py](https://github.com/juliusfrost/minerl-wrappers/blob/dev/minerl_wrappers/pfrl_2019_wrappers.py)  
-[pfrl_2020_wrappers.py](https://github.com/juliusfrost/minerl-wrappers/blob/dev/minerl_wrappers/pfrl_2020_wrappers.py)
+[pfrl_2019_wrappers.py](https://github.com/minerl-wrappers/minerl-wrappers/blob/main/minerl_wrappers/pfrl_2019_wrappers.py)  
+[pfrl_2020_wrappers.py](https://github.com/minerl-wrappers/minerl-wrappers/blob/main/minerl_wrappers/pfrl_2020_wrappers.py)
 
 ```python
 DEFAULT_CONFIG = {
