@@ -139,4 +139,4 @@ env = wrap(env, **config)
 It is highly encouraged to contribute wrappers that worked well for you!
 Just create a [Pull Request](https://github.com/minerl-wrappers/minerl-wrappers/pulls) on this repository, 
 and we'll work together to get it merged!
-Read `README-dev.md` for contributing guidelines and more details!
+Read [`README-DEV.md`](https://github.com/minerl-wrappers/minerl-wrappers/blob/main/README-DEV.md) for contributing guidelines and more details!
