@@ -1,0 +1,3 @@
+pfrl_2019: true
+pfrl_2019_config:
+  frame_skip: 4

@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "minerl-wrappers"
+version = "0.1.0"
+description = "minerl-wrapper compiles common wrappers and standardizes code for reproducibility in the MineRL environment!"
+authors = ["Julius Frost"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+minerl = "0.4.0"
+gym = "^0.18.3"
+numpy = "^1.21.0"
+opencv-python = "^4.5.3"
+PyYAML = "^5.4.1"
+
+
+[tool.poetry.dev-dependencies]
+black = "^21.7b0"
+pytest = "^6.2.4"
+scikit-learn = "^0.24.2"
+pytest-cov = "^2.12.1"
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "DEBUG"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"

@@ -1,0 +1,68 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+      - release/*
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7]
+        pytest-args:
+          - tests/test_pfrl_2019_wrappers.py
+          - tests/test_pfrl_2020_wrappers.py
+          - -k MineRLTreechop-v0
+          - -k MineRLNavigate-v0
+          - -k MineRLNavigateDense-v0
+          - -k MineRLNavigateExtreme-v0
+          - -k MineRLNavigateExtremeDense-v0
+          - -k MineRLObtainDiamond-v0
+          - -k MineRLObtainDiamondDense-v0
+          - -k MineRLObtainIronPickaxe-v0
+          - -k MineRLObtainIronPickaxeDense-v0
+          - -k MineRLTreechopVectorObf-v0
+          - -k MineRLNavigateVectorObf-v0
+          - -k MineRLNavigateDenseVectorObf-v0
+          - -k MineRLNavigateExtremeVectorObf-v0
+          - -k MineRLNavigateExtremeDenseVectorObf-v0
+          - -k MineRLObtainDiamondVectorObf-v0
+          - -k MineRLObtainDiamondDenseVectorObf-v0
+          - -k MineRLObtainIronPickaxeVectorObf-v0
+          - -k MineRLObtainIronPickaxeDenseVectorObf-v0
+        include:
+          - pytest-args: tests/test_pfrl_2020_wrappers.py
+            python-version: 3.8
+          - pytest-args: tests/test_pfrl_2020_wrappers.py
+            python-version: 3.9
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt' # See 'Supported distributions' for available options
+          java-version: '8'
+      - uses: atu4403/poetry-setup-multi-platform@v1
+      - name: Install dependencies with poetry
+        run: |
+          poetry --version
+          poetry install
+        shell: bash
+      - name: Lint with black
+        run: poetry run black --check --diff --color .
+        shell: bash
+      - name: Test with pytest
+        run: poetry run pytest ${{ matrix.pytest-args }} --cov=minerl_wrappers --cov-report=xml
+        shell: bash
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          verbose: true
