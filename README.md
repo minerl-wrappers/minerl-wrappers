@@ -1,6 +1,6 @@
 # minerl-wrappers
 
-`minerl-wrapper` compiles common wrappers and standardizes code for reproducibility in the [MineRL environment](https://minerl.readthedocs.io/en/latest/index.html)!
+`minerl-wrappers` compiles common wrappers and standardizes code for reproducibility in the [MineRL environment](https://minerl.readthedocs.io/en/latest/index.html)!
 
 # Currently Supported Environments
 - MineRL Basic Environments
