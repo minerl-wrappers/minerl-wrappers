@@ -72,12 +72,12 @@ Make sure you have Java JDK 8 installed as the only Java version for MineRL.
 
 Install directly from git:
 ```bash
-pip install git+https://github.com/juliusfrost/minerl-wrappers.git
+pip install git+https://github.com/minerl-wrappers/minerl-wrappers.git
 ```
 
 ## Clone and Install
 ```bash
-git clone https://github.com/juliusfrost/minerl-wrappers.git
+git clone https://github.com/minerl-wrappers/minerl-wrappers.git
 cd minerl-wrappers
 ```
 
@@ -137,6 +137,6 @@ env = wrap(env, **config)
 
 # Contributing
 It is highly encouraged to contribute wrappers that worked well for you!
-Just create a [Pull Request](https://github.com/juliusfrost/minerl-wrappers/pulls) on this repository, 
+Just create a [Pull Request](https://github.com/minerl-wrappers/minerl-wrappers/pulls) on this repository, 
 and we'll work together to get it merged!
 Read `README-dev.md` for contributing guidelines and more details!
