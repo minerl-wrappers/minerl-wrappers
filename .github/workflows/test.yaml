@@ -2,9 +2,12 @@ name: Tests
 
 on:
   push:
-    branches: [ dev ]
+    branches:
+      - dev
+      - release/*
   pull_request:
-    branches: [ dev ]
+    branches:
+      - dev
 
 jobs:
   ci:
@@ -53,9 +56,13 @@ jobs:
           poetry --version
           poetry install
         shell: bash
-      - name: Test with pytest
-        run: poetry run pytest ${{ matrix.pytest-args }}
-        shell: bash
       - name: Lint with black
         run: poetry run black --check --diff --color .
         shell: bash
+      - name: Test with pytest
+        run: poetry run pytest ${{ matrix.pytest-args }} --cov=minerl_wrappers --cov-report=xml
+        shell: bash
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
