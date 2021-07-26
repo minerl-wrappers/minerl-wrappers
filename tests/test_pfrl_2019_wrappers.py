@@ -5,7 +5,7 @@ from pathlib import Path
 import gym
 
 from minerl_wrappers import wrap
-from tests.common import build_and_run_list_config_no_reset
+from tests.common import build_and_run_list_config
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -35,7 +35,7 @@ def test_pfrl_2019_wrappers():
             "eval_epsilon": 1,
         },
     })
-    build_and_run_list_config_no_reset(gym_id, config_list, 4)
+    build_and_run_list_config(gym_id, config_list, 4)
 
 
 def config_validation(gym_id):

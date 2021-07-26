@@ -6,7 +6,7 @@ import gym
 
 from minerl_wrappers import wrap
 from minerl_wrappers.utils import load_means
-from tests.common import build_and_run_list_config_no_reset
+from tests.common import build_and_run_list_config
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -61,7 +61,7 @@ def test_pfrl_2020_wrappers():
             "tuple_obs_space": True,
         },
     })
-    build_and_run_list_config_no_reset(gym_id, config_list, 4)
+    build_and_run_list_config(gym_id, config_list, 4)
 
 
 def config_validation(gym_id):

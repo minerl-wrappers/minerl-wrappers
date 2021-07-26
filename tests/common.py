@@ -49,16 +49,13 @@ def build_and_run_step(gym_id, config_file=None, **kwargs):
     env.close()
 
 
-def build_and_run_list_config_no_reset(gym_id, list_config: list, max_steps=1):
+def build_and_run_list_config(gym_id, list_config: list, max_steps=1):
     env = gym.make(gym_id)
-    env.reset()
-    done = False
     for config in list_config:
         logging.debug(f"testing config: {config}")
         wrapped_env = wrap(env, **config)
+        wrapped_env.reset()
         for step in range(max_steps):
-            if done:
-                env.reset()
             action = wrapped_env.action_space.sample()
             _, _, done, _ = wrapped_env.step(action)
             if done:
