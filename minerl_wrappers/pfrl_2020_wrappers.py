@@ -33,6 +33,8 @@ def wrap_env(
     randomize_action,
     eval_epsilon,
     action_choices,
+    include_vec_obs=False,
+    tuple_obs_space=False,
 ):
     # wrap env: time limit...
     # Don't use `ContinuingTimeLimit` for testing, in order to avoid unexpected behavior on submissions.
@@ -59,7 +61,10 @@ def wrap_env(
         env = FrameSkip(env, skip=frame_skip)
     if gray_scale:
         env = GrayScaleWrapper(env, dict_space_key="pov")
-    env = ObtainPoVWrapper(env)
+    if not include_vec_obs:
+        env = ObtainPoVWrapper(env)
+    elif tuple_obs_space:
+        env = TupleObsWrapper(env)
     env = MoveAxisWrapper(
         env, source=-1, destination=0
     )  # convert hwc -> chw as Pytorch requires.
@@ -163,6 +168,17 @@ class ObtainPoVWrapper(gym.ObservationWrapper):
 
     def observation(self, observation):
         return observation["pov"]
+
+
+class TupleObsWrapper(gym.ObservationWrapper):
+    def __init__(self, env):
+        super().__init__(env)
+        self.observation_space = gym.spaces.Tuple(
+            (self.observation_space["pov"], self.observation_space["vector"])
+        )
+
+    def observation(self, observation):
+        return observation["pov"], observation["vector"]
 
 
 class UnifiedObservationWrapper(gym.ObservationWrapper):

@@ -1,6 +1,6 @@
 # minerl-wrappers
 
-`minerl-wrapper` compiles common wrappers and standardizes code for reproducibility in the [MineRL environment](https://minerl.readthedocs.io/en/latest/index.html)!
+`minerl-wrappers` compiles common wrappers and standardizes code for reproducibility in the [MineRL environment](https://minerl.readthedocs.io/en/latest/index.html)!
 
 # Currently Supported Environments
 - MineRL Basic Environments
@@ -62,9 +62,16 @@ DEFAULT_CONFIG = {
         "randomize_action": False,
         "eval_epsilon": 0.001,
         "action_choices": None,
+        "include_vec_obs": False,
+        "tuple_obs_space": False,
     },
 }
 ```
+
+# Requirements
+- Java JDK 8
+- Python 3.7+
+- `minerl==0.4.0`
 
 # Install
 
