@@ -36,6 +36,8 @@ DEFAULT_CONFIG = {
         "randomize_action": False,
         "eval_epsilon": 0.001,
         "action_choices": None,
+        "include_vec_obs": False,
+        "tuple_obs_space": False,
     },
 }
 
