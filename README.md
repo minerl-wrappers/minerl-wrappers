@@ -66,6 +66,11 @@ DEFAULT_CONFIG = {
 }
 ```
 
+# Requirements
+- Java JDK 8
+- Python 3.7+
+- `minerl==0.4.0`
+
 # Install
 
 Make sure you have Java JDK 8 installed as the only Java version for MineRL.
