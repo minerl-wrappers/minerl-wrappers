@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 def test_pfrl_2019_wrappers():
-    gym_id = "MineRLObtainDiamondDenseVectorObf-v0"
+    gym_id = "MineRLObtainDiamondDense-v0"
     config_validation(gym_id)
     config_list = []
     config_list.append({})
