@@ -46,6 +46,21 @@ def test_pfrl_2020_wrappers():
             "eval_epsilon": 1,
         },
     })
+    config_list.append({
+        "pfrl_2020": True,
+        "pfrl_2020_config": {
+            "action_choices": means,
+            "include_vec_obs": True,
+        },
+    })
+    config_list.append({
+        "pfrl_2020": True,
+        "pfrl_2020_config": {
+            "action_choices": means,
+            "include_vec_obs": True,
+            "tuple_obs_space": True,
+        },
+    })
     build_and_run_list_config_no_reset(gym_id, config_list, 4)
 
 
