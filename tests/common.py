@@ -47,3 +47,20 @@ def build_and_run_step(gym_id, config_file=None, **kwargs):
     reset_and_sample_episode(env, 1)
     logging.debug("Closing MineRL environment...")
     env.close()
+
+
+def build_and_run_list_config_no_reset(gym_id, list_config: list, max_steps=1):
+    env = gym.make(gym_id)
+    env.reset()
+    done = False
+    for config in list_config:
+        logging.debug(f"testing config: {config}")
+        wrapped_env = wrap(env, **config)
+        for step in range(max_steps):
+            if done:
+                env.reset()
+            action = wrapped_env.action_space.sample()
+            _, _, done, _ = wrapped_env.step(action)
+            if done:
+                break
+    env.close()
