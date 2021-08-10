@@ -6,6 +6,7 @@ import yaml
 
 from .pfrl_2020_wrappers import wrap_env as pfrl_2020_wrap_env
 from .pfrl_2019_wrappers import wrap_env as pfrl_2019_wrap_env
+from .rllib_wrap import wrap_env as rllib_wrap_env
 from .utils import merge_dicts, load_means, get_env_id
 
 DEFAULT_CONFIG = {
@@ -39,9 +40,22 @@ DEFAULT_CONFIG = {
         "include_vec_obs": False,
         "tuple_obs_space": False,
     },
+    "rllib": False,
+    "rllib_config": {
+        "num_stack": 1,
+        "action_repeat": 1,
+        "gray_scale": False,
+        "seed": None,
+        "normalize_observation": False,
+        "normalize_action": False,
+        "reward_scale": 1.0,
+        "action_choices": None,
+        "remove_vec_obs": False,
+        "channels_last": True,
+    },
 }
 
-CONFLICTING_OPTIONS = ["pfrl_2019", "pfrl_2020"]
+CONFLICTING_OPTIONS = ["pfrl_2019", "pfrl_2020", "rllib"]
 
 
 class WrapperConfig:
@@ -88,6 +102,10 @@ class WrapperConfig:
                 self.config["pfrl_2020_config"]["action_choices"] = action_choices
             if not (action_choices is None or isinstance(action_choices, np.ndarray)):
                 raise ValueError("action_choices must be None or a numpy array!")
+        if self.config["rllib"]:
+            action_choices = self.config["rllib_config"]["action_choices"]
+            if isinstance(action_choices, str) and action_choices == "debug":
+                self.config["rllib_config"]["action_choices"] = load_means()
 
 
 def wrap_env(env, config):
@@ -124,4 +142,7 @@ def wrap_env(env, config):
             pfrl_config["eval_epsilon"],
             pfrl_config["action_choices"],
         )
+    elif config["rllib"]:
+        rllib_config = config["rllib_config"]
+        return rllib_wrap_env(env, **rllib_config)
     raise NotImplementedError("No wrapper configuration detected.")
