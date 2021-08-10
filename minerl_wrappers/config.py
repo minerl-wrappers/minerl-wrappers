@@ -51,7 +51,7 @@ DEFAULT_CONFIG = {
         "reward_scale": 1.0,
         "action_choices": None,
         "remove_vec_obs": False,
-        "channels_last": True,
+        "channels_first": False,
     },
 }
 

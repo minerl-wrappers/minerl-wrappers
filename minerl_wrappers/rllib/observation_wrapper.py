@@ -26,7 +26,7 @@ class MineRLRemoveVecObservationWrapper(gym.ObservationWrapper):
         return observation[self._pov_space_index]
 
 
-class MineRLPOVChannelsLastWrapper(gym.ObservationWrapper):
+class MineRLPOVChannelsFirstWrapper(gym.ObservationWrapper):
     def __init__(self, env):
         super().__init__(env)
         if isinstance(self.observation_space, gym.spaces.Dict):
@@ -55,9 +55,10 @@ class MineRLPOVChannelsLastWrapper(gym.ObservationWrapper):
 
 
 def transpose_obs(pov_obs: np.ndarray):
-    assert pov_obs.shape == (3, 64, 64)
-    new_obs = pov_obs.transpose((1, 2, 0))
-    assert new_obs.shape == (64, 64, 3)
+    print(pov_obs.shape)
+    assert pov_obs.shape == (64, 64, 3)
+    new_obs = pov_obs.transpose((2, 0, 1))
+    assert new_obs.shape == (3, 64, 64)
     return new_obs
 
 

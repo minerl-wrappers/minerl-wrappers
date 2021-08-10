@@ -14,7 +14,7 @@ from .rllib.observation_stack_wrapper import MineRLObservationStack
 from .rllib.observation_wrapper import (
     MineRLObservationWrapper,
     MineRLRemoveVecObservationWrapper,
-    MineRLPOVChannelsLastWrapper,
+    MineRLPOVChannelsFirstWrapper,
 )
 
 
@@ -29,7 +29,7 @@ def wrap_env(
     reward_scale=1.0,
     action_choices=None,
     remove_vec_obs=False,
-    channels_last=True,
+    channels_first=False,
     **kwargs
 ):
     env = MineRLObservationWrapper(env)
@@ -64,8 +64,8 @@ def wrap_env(
         env = MineRLObservationStack(env, num_stack)
     if remove_vec_obs:
         env = MineRLRemoveVecObservationWrapper(env, kwargs.get("pov_space_index", 0))
-    if channels_last:
-        env = MineRLPOVChannelsLastWrapper(env)
+    if channels_first:
+        env = MineRLPOVChannelsFirstWrapper(env)
     if action_repeat > 1:
         env = MineRLActionRepeat(env, action_repeat)
     if seed is not None:
