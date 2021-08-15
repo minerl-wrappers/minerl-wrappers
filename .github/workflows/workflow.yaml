@@ -43,7 +43,7 @@ jobs:
       - name: Upload Docker Image
         uses: actions/upload-artifact@v2
         with:
-          name: "minerl-wrappers:latest"
+          name: "docker-image"
           path: minerl-wrappers_latest.tar
           retention-days: 1
   test:
@@ -78,7 +78,7 @@ jobs:
       - name: Download Docker Image
         uses: actions/download-artifact@v2
         with:
-          name: "minerl-wrappers:latest"
+          name: "docker-image"
       - name: Load Docker Image
         run: |
           docker load --input minerl-wrappers_latest.tar
