@@ -1,4 +1,4 @@
-name: Tests
+name: "Docker CI"
 
 on:
   push:
@@ -8,13 +8,29 @@ on:
   pull_request:
     branches:
       - main
-
 jobs:
-  ci:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Docker
+        uses: docker/setup-buildx-action@v1
+        id: buildx
+        with:
+          install: true
+      - name: Build Docker Image
+        run: |
+          docker build . -t minerl-wrappers
+      - name: Upload image
+        uses: ishworkh/docker-image-artifact-upload@v1
+        with:
+          image: "minerl-wrappers"
+  test:
+    needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7]
         pytest-args:
           - tests/test_pfrl_2019_wrappers.py
           - tests/test_pfrl_2020_wrappers.py
@@ -36,31 +52,22 @@ jobs:
           - -k MineRLObtainDiamondDenseVectorObf-v0
           - -k MineRLObtainIronPickaxeVectorObf-v0
           - -k MineRLObtainIronPickaxeDenseVectorObf-v0
-        include:
-          - pytest-args: tests/test_pfrl_2020_wrappers.py
-            python-version: 3.8
-          - pytest-args: tests/test_pfrl_2020_wrappers.py
-            python-version: 3.9
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Download image
+        uses: ishworkh/docker-image-artifact-download@v1
         with:
-          python-version: ${{ matrix.python-version }}
-      - uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt' # See 'Supported distributions' for available options
-          java-version: '8'
-      - uses: atu4403/poetry-setup-multi-platform@v1
-      - name: Install dependencies with poetry
-        run: |
-          poetry --version
-          poetry install
-        shell: bash
+          image: "minerl-wrappers"
       - name: Lint with black
-        run: poetry run black --check --diff --color .
+        run: |
+          docker run --rm -it minerl-wrappers \
+          poetry run black --check --diff --color .
         shell: bash
       - name: Test with pytest
-        run: poetry run pytest ${{ matrix.pytest-args }} --cov=minerl_wrappers --cov-report=xml
+        run: |
+          docker run --rm -it -v $(pwd)/cov.xml:/minerl-wrappers/cov.xml minerl-wrappers \
+          poetry run pytest ${{ matrix.pytest-args }} --cov=minerl_wrappers --cov-report=xml
         shell: bash
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
