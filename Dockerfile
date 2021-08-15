@@ -36,7 +36,9 @@ COPY poetry.lock pyproject.toml /minerl-wrappers/
 RUN poetry config virtualenvs.create false \
   && poetry install --no-interaction --no-ansi
 
-COPY . /minerl-wrappers
+COPY ./tests/build_minerl.py /minerl-wrappers/tests/build_minerl.py
 
 # Build minerl
 RUN python /minerl-wrappers/tests/build_minerl.py
+
+COPY . /minerl-wrappers
