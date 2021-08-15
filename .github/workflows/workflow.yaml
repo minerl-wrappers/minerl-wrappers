@@ -16,11 +16,11 @@ jobs:
         uses: actions/checkout@v2
       - name: Build Docker Image
         run: |
-          docker build . -t minerl-wrappers
+          docker build . -t minerl-wrappers:latest
       - name: Upload image
         uses: ishworkh/docker-image-artifact-upload@v1
         with:
-          image: "minerl-wrappers"
+          image: "minerl-wrappers:latest"
   test:
     needs: build
     runs-on: ubuntu-latest
@@ -53,7 +53,7 @@ jobs:
       - name: Download image
         uses: ishworkh/docker-image-artifact-download@v1
         with:
-          image: "minerl-wrappers"
+          image: "minerl-wrappers:latest"
       - name: Lint with black
         run: |
           docker run --rm -it minerl-wrappers \
