@@ -56,12 +56,12 @@ jobs:
           image: "minerl-wrappers:latest"
       - name: Lint with black
         run: |
-          docker run --rm -it minerl-wrappers \
+          docker run --rm -it minerl-wrappers:latest \
           poetry run black --check --diff --color .
         shell: bash
       - name: Test with pytest
         run: |
-          docker run --rm -it -v $(pwd)/cov.xml:/minerl-wrappers/cov.xml minerl-wrappers \
+          docker run --rm -it -v $(pwd)/cov.xml:/minerl-wrappers/cov.xml minerl-wrappers:latest \
           poetry run pytest ${{ matrix.pytest-args }} --cov=minerl_wrappers --cov-report=xml
         shell: bash
       - name: Upload coverage to Codecov
