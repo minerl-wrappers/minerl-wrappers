@@ -89,7 +89,7 @@ jobs:
         shell: bash
       - name: Test with pytest
         run: |
-          docker run --rm -i -v coverage.xml:/minerl-wrappers/coverage.xml minerl-wrappers:latest \
+          docker run --rm -i -v $(pwd)/coverage.xml:/minerl-wrappers/coverage.xml minerl-wrappers:latest \
           poetry run pytest ${{ matrix.pytest-args }} --cov=minerl_wrappers --cov-report xml:coverage.xml
         shell: bash
       - name: Upload coverage to Codecov
