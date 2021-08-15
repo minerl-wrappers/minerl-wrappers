@@ -30,13 +30,13 @@ RUN python -m pip install "poetry==$POETRY_VERSION"
 
 # Copy only requirements to cache them in docker layer
 WORKDIR /minerl-wrappers
-COPY ../poetry.lock pyproject.toml /minerl-wrappers/
+COPY poetry.lock pyproject.toml /minerl-wrappers/
 
 # Project initialization:
 RUN poetry config virtualenvs.create false \
   && poetry install --no-interaction --no-ansi
 
-COPY .. /minerl-wrappers
+COPY . /minerl-wrappers
 
 # Build minerl
 RUN python /minerl-wrappers/tests/build_minerl.py
