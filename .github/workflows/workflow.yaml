@@ -41,10 +41,15 @@ jobs:
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-      - name: Upload image
-        uses: ishworkh/docker-image-artifact-upload@v1
+      - name: Save Docker Image
+        run: |
+          docker save minerl-wrappers:latest --output minerl-wrappers_latest.tar
+      - name: Upload Docker Image
+        uses: actions/upload-artifact@v2
         with:
-          image: "minerl-wrappers:latest"
+          name: "minerl-wrappers:latest"
+          path: minerl-wrappers_latest.tar
+          retention-days: 1
   test:
     needs: build
     runs-on: ubuntu-latest
@@ -74,10 +79,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Download image
-        uses: ishworkh/docker-image-artifact-download@v1
+      - name: Download Docker Image
+        uses: actions/download-artifact@v2
         with:
-          image: "minerl-wrappers:latest"
+          name: "minerl-wrappers:latest"
+      - name: Load Docker Image
+        run: |
+          docker load --input minerl-wrappers_latest.tar
       - name: Lint with black
         run: |
           docker run --rm -i minerl-wrappers:latest \
