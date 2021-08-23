@@ -29,7 +29,8 @@ jobs:
           docker buildx build \
           --target dependencies \
           --cache-from type=local,src=/tmp/.buildx-cache \
-          --cache-to type=local,dest=/tmp/.buildx-cache-new
+          --cache-to type=local,dest=/tmp/.buildx-cache-new \
+          .
         # This ugly bit is necessary if you don't want your cache to grow forever
         # till it hits GitHub's limit of 5GB.
         # Temp fix
@@ -82,7 +83,8 @@ jobs:
           docker buildx build \
           --target test \
           -t minerl-wrappers:latest \
-          --cache-from type=local,src=/tmp/.buildx-cache
+          --cache-from type=local,src=/tmp/.buildx-cache \
+          .
       - name: Lint with black
         run: |
           docker run --rm -i minerl-wrappers:latest \
