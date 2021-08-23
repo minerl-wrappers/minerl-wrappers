@@ -71,7 +71,7 @@ DEFAULT_CONFIG = {
 # Requirements
 - Java JDK 8
 - Python 3.7+
-- `minerl==0.4.0`
+- `minerl==0.4.1`
 
 # Install
 
