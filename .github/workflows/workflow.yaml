@@ -94,7 +94,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Verify files changed
+        uses: tj-actions/verify-changed-files@v7.1
+        id: changed_files
+        with:
+          files: |
+            .github
+            tests/build_minerl.py
+            Dockerfile
+            poetry.lock
+            pyproject.toml
+            minerl_wrappers
+            tests
       - name: Get Cached Docker Image
+        if: steps.changed_files.outputs.files_changed == 'true'
         uses: actions/cache@v2
         with:
           path: /tmp/image.tar
@@ -102,9 +115,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-image-
       - name: Load Docker Image
+        if: steps.changed_files.outputs.files_changed == 'true'
         run: |
           docker load --input /tmp/image.tar
       - name: Lint with black
+        if: steps.changed_files.outputs.files_changed == 'true'
         run: |
           docker run --rm -i \
           -v $(pwd):/minerl-wrappers \
@@ -112,6 +127,7 @@ jobs:
           poetry run black --check --diff --color .
         shell: bash
       - name: Test with pytest
+        if: steps.changed_files.outputs.files_changed == 'true'
         run: |
           docker run --rm -i \
           -v $(pwd):/minerl-wrappers \
@@ -119,6 +135,7 @@ jobs:
           poetry run pytest ${{ matrix.pytest-args }} --cov=minerl_wrappers --cov-report xml:coverage.xml
         shell: bash
       - name: Upload coverage to Codecov
+        if: steps.changed_files.outputs.files_changed == 'true'
         uses: codecov/codecov-action@v2
         with:
           verbose: true
