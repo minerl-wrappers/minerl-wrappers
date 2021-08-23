@@ -84,6 +84,7 @@ jobs:
           --target test \
           -t minerl-wrappers:latest \
           --cache-from type=local,src=/tmp/.buildx-cache \
+          --load \
           .
       - name: Lint with black
         run: |
