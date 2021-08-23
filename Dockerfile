@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:18.04 AS dependencies
 
 ARG PYTHON_VERSION=3.8
 
@@ -41,4 +41,5 @@ COPY ./tests/build_minerl.py /minerl-wrappers/tests/build_minerl.py
 # Build minerl
 RUN python /minerl-wrappers/tests/build_minerl.py
 
+FROM dependencies AS test
 COPY . /minerl-wrappers
