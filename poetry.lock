@@ -18,7 +18,7 @@ python-versions = "*"
 name = "atomicwrites"
 version = "1.4.0"
 description = "Atomic file writes."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -26,7 +26,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 name = "attrs"
 version = "21.2.0"
 description = "Classes Without Boilerplate"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -251,7 +251,7 @@ python-versions = ">=3.5"
 name = "importlib-metadata"
 version = "4.6.1"
 description = "Read metadata from Python packages"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -276,7 +276,7 @@ python-versions = ">=3.5"
 name = "iniconfig"
 version = "1.1.1"
 description = "iniconfig: brain-dead simple config-ini parsing"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
@@ -416,7 +416,7 @@ traitlets = "*"
 
 [[package]]
 name = "minerl"
-version = "0.4.0"
+version = "0.4.1"
 description = "MineRL environment and data loader for reinforcement learning from human demonstration in Minecraft"
 category = "main"
 optional = false
@@ -440,11 +440,15 @@ opencv-python = ">=4.1.0.25"
 pillow = ">=8.0.0"
 psutil = ">=5.6.2"
 Pyro4 = ">=4.76"
+pytest = "*"
 requests = ">=2.20.0"
 simple-term-menu = "*"
 tqdm = ">=4.32.2"
 typing = ">=3.6.6"
 xmltodict = "0.12.0"
+
+[package.extras]
+docs = ["sphinx-rtd-theme", "sphinxcontrib-napoleon"]
 
 [[package]]
 name = "mypy-extensions"
@@ -477,7 +481,7 @@ numpy = ">=1.21.0"
 name = "packaging"
 version = "21.0"
 description = "Core utilities for Python packages"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -535,7 +539,7 @@ python-versions = ">=3.6"
 name = "pluggy"
 version = "0.13.1"
 description = "plugin and hook calling mechanisms for python"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -579,7 +583,7 @@ python-versions = "*"
 name = "py"
 version = "1.10.0"
 description = "library with cross-python path, ini-parsing, io, code, log facilities"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -630,7 +634,7 @@ serpent = {version = ">=1.27", markers = "python_version >= \"3.2\""}
 name = "pytest"
 version = "6.2.4"
 description = "pytest: simple powerful testing with Python"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -776,7 +780,7 @@ python-versions = ">=3.6"
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
@@ -838,7 +842,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 name = "typing-extensions"
 version = "3.10.0.0"
 description = "Backported and Experimental Type Hints for Python 3.5+"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
@@ -875,7 +879,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 name = "zipp"
 version = "3.5.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -886,7 +890,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "7efd29119219ea9b67c2eaf5e9d55ee2135acb910e3e083c3dd1566a42bbd13c"
+content-hash = "08b59813c06d3412c28c34f78ea075c5d8c114bf9a582604bee8e8d57bced2a9"
 
 [metadata.files]
 appdirs = [
@@ -1206,7 +1210,7 @@ matplotlib-inline = [
     {file = "matplotlib_inline-0.1.2-py3-none-any.whl", hash = "sha256:5cf1176f554abb4fa98cb362aa2b55c500147e4bdbb07e3fda359143e1da0811"},
 ]
 minerl = [
-    {file = "minerl-0.4.0.tar.gz", hash = "sha256:9e27e4fdac0c33a20fcfc8b14429a676c2665f85c630d0f8043bb1e4de9ea166"},
+    {file = "minerl-0.4.1.tar.gz", hash = "sha256:388b708b96a7ca2628ce436b6aa5f80e74dcdf663ca34c291b8857f8c31f8c81"},
 ]
 mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
