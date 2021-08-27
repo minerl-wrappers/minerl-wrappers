@@ -55,7 +55,6 @@ class MineRLPOVChannelsFirstWrapper(gym.ObservationWrapper):
 
 
 def transpose_obs(pov_obs: np.ndarray):
-    print(pov_obs.shape)
     assert pov_obs.shape == (64, 64, 3)
     new_obs = pov_obs.transpose((2, 0, 1))
     assert new_obs.shape == (3, 64, 64)
