@@ -47,7 +47,7 @@ class MineRLPOVChannelsFirstWrapper(gym.ObservationWrapper):
             obs = copy.copy(observation)
             obs["pov"] = transpose_obs(observation["pov"])
         elif isinstance(observation, tuple):
-            pov = transpose_space(observation[0])
+            pov = transpose_obs(observation[0])
             obs = (pov, *observation[1:])
         else:
             obs = transpose_obs(observation)
