@@ -42,15 +42,15 @@ DEFAULT_CONFIG = {
     },
     "rllib": False,
     "rllib_config": {
-        "num_stack": 1,
-        "action_repeat": 1,
+        "frame_stack": 1,
+        "frame_skip": 1,
         "gray_scale": False,
         "seed": None,
         "normalize_observation": False,
         "normalize_action": False,
         "reward_scale": 1.0,
         "action_choices": None,
-        "remove_vec_obs": False,
+        "include_vec_obs": True,
         "channels_first": False,
     },
 }

@@ -20,15 +20,15 @@ from .rllib.observation_wrapper import (
 
 def wrap_env(
     env,
-    num_stack=1,
-    action_repeat=1,
+    frame_stack=1,
+    frame_skip=1,
     gray_scale=False,
     seed=None,
     normalize_observation=False,
     normalize_action=False,
     reward_scale=1.0,
     action_choices=None,
-    remove_vec_obs=False,
+    include_vec_obs=True,
     channels_first=False,
     **kwargs
 ):
@@ -60,14 +60,14 @@ def wrap_env(
             )
     if reward_scale != 1.0:
         env = MineRLRewardScaleWrapper(env, reward_scale)
-    if num_stack > 1:
-        env = MineRLObservationStack(env, num_stack)
-    if remove_vec_obs:
+    if frame_stack > 1:
+        env = MineRLObservationStack(env, frame_stack)
+    if not include_vec_obs:
         env = MineRLRemoveVecObservationWrapper(env, kwargs.get("pov_space_index", 0))
     if channels_first:
         env = MineRLPOVChannelsFirstWrapper(env)
-    if action_repeat > 1:
-        env = MineRLActionRepeat(env, action_repeat)
+    if frame_skip > 1:
+        env = MineRLActionRepeat(env, frame_skip)
     if seed is not None:
         env = MineRLDeterministic(env, seed)
     return env
