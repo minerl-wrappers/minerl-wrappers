@@ -6,7 +6,7 @@ import yaml
 
 from .pfrl_2020_wrappers import wrap_env as pfrl_2020_wrap_env
 from .pfrl_2019_wrappers import wrap_env as pfrl_2019_wrap_env
-from .rllib_wrap import wrap_env as rllib_wrap_env
+from .diamond_wrappers import wrap_env as diamond_wrap_env
 from .utils import merge_dicts, load_means, get_env_id
 
 DEFAULT_CONFIG = {
@@ -40,8 +40,8 @@ DEFAULT_CONFIG = {
         "include_vec_obs": False,
         "tuple_obs_space": False,
     },
-    "rllib": False,
-    "rllib_config": {
+    "diamond": False,
+    "diamond_config": {
         "frame_stack": 1,
         "frame_skip": 1,
         "gray_scale": False,
@@ -57,7 +57,7 @@ DEFAULT_CONFIG = {
     },
 }
 
-CONFLICTING_OPTIONS = ["pfrl_2019", "pfrl_2020", "rllib"]
+CONFLICTING_OPTIONS = ["pfrl_2019", "pfrl_2020", "diamond"]
 
 
 class WrapperConfig:
@@ -104,10 +104,10 @@ class WrapperConfig:
                 self.config["pfrl_2020_config"]["action_choices"] = action_choices
             if not (action_choices is None or isinstance(action_choices, np.ndarray)):
                 raise ValueError("action_choices must be None or a numpy array!")
-        if self.config["rllib"]:
-            action_choices = self.config["rllib_config"]["action_choices"]
+        if self.config["diamond"]:
+            action_choices = self.config["diamond_config"]["action_choices"]
             if isinstance(action_choices, str) and action_choices == "debug":
-                self.config["rllib_config"]["action_choices"] = load_means()
+                self.config["diamond_config"]["action_choices"] = load_means()
 
 
 def wrap_env(env, config):
@@ -144,7 +144,7 @@ def wrap_env(env, config):
             pfrl_config["eval_epsilon"],
             pfrl_config["action_choices"],
         )
-    elif config["rllib"]:
-        rllib_config = config["rllib_config"]
-        return rllib_wrap_env(env, **rllib_config)
+    elif config["diamond"]:
+        diamond_config = config["diamond_config"]
+        return diamond_wrap_env(env, **diamond_config)
     raise NotImplementedError("No wrapper configuration detected.")

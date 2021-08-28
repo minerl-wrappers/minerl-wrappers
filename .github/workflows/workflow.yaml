@@ -75,7 +75,7 @@ jobs:
         pytest-args:
           - tests/test_pfrl_2019_wrappers.py
           - tests/test_pfrl_2020_wrappers.py
-          - tests/test_rllib_wrappers.py
+          - tests/test_diamond_wrappers.py
           - -k MineRLTreechop-v0
           - -k MineRLNavigate-v0
           - -k MineRLNavigateDense-v0

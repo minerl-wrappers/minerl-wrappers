@@ -8,66 +8,66 @@ from tests.common import build_and_run_list_config
 logging.basicConfig(level=logging.DEBUG)
 
 
-def test_rllib_wrappers():
+def test_diamond_wrappers():
     gym_id = "MineRLObtainDiamondDenseVectorObf-v0"
     means = load_means()
     config_list = [
         {
-            "rllib": True,
+            "diamond": True,
         },
         {
-            "rllib": True,
-            "rllib_config": {
+            "diamond": True,
+            "diamond_config": {
                 "action_choices": means,
             },
         },
         {
-            "rllib": True,
-            "rllib_config": {
+            "diamond": True,
+            "diamond_config": {
                 "action_choices": means,
                 "frame_skip": 4,
                 "frame_stack": 4,
             },
         },
         {
-            "rllib": True,
-            "rllib_config": {
+            "diamond": True,
+            "diamond_config": {
                 "action_choices": DEFAULT_KMEANS_FILE,
                 "gray_scale": True,
             },
         },
         {
-            "rllib": True,
-            "rllib_config": {
+            "diamond": True,
+            "diamond_config": {
                 "action_choices": means,
                 "seed": 0,
                 "reward_scale": 2.0,
             },
         },
         {
-            "rllib": True,
-            "rllib_config": {
+            "diamond": True,
+            "diamond_config": {
                 "action_choices": means,
                 "include_vec_obs": False,
             },
         },
         {
-            "rllib": True,
-            "rllib_config": {
+            "diamond": True,
+            "diamond_config": {
                 "include_vec_obs": False,
                 "frame_skip": 4,
                 "frame_stack": 4,
             },
         },
         {
-            "rllib": True,
-            "rllib_config": {
+            "diamond": True,
+            "diamond_config": {
                 "channels_first": True,
             },
         },
         {
-            "rllib": True,
-            "rllib_config": {
+            "diamond": True,
+            "diamond_config": {
                 "action_choices": means,
                 "include_vec_obs": False,
                 "frame_skip": 4,
@@ -76,15 +76,15 @@ def test_rllib_wrappers():
             },
         },
         {
-            "rllib": True,
-            "rllib_config": {
+            "diamond": True,
+            "diamond_config": {
                 "normalize_action": True,
                 "normalize_observation": True,
             },
         },
         {
-            "rllib": True,
-            "rllib_config": {
+            "diamond": True,
+            "diamond_config": {
                 "normalize_action": True,
                 "normalize_observation": True,
                 "action_choices": means,
@@ -95,15 +95,15 @@ def test_rllib_wrappers():
             },
         },
         {
-            "rllib": True,
-            "rllib_config": {
+            "diamond": True,
+            "diamond_config": {
                 "tuple_obs_space": False,
                 "flatten_action_space": False,
             },
         },
         {
-            "rllib": True,
-            "rllib_config": {
+            "diamond": True,
+            "diamond_config": {
                 "tuple_obs_space": False,
                 "flatten_action_space": False,
                 "channels_first": True,
