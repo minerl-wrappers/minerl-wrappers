@@ -59,7 +59,16 @@ def build_and_run_list_config(
         wrapped_env = wrap(env, **config)
         wrapped_env.reset()
         if test_action_wrappers:
-            sample_and_test_action_wrappers(wrapped_env)
+            assert_equal_backward = True
+            if (
+                config["rllib"]
+                and config.get("rllib_config", {}).get("action_choices", None)
+                is not None
+            ):
+                assert_equal_backward = False
+            sample_and_test_action_wrappers(
+                wrapped_env, assert_equal_backward=assert_equal_backward
+            )
         for step in range(max_steps):
             action = wrapped_env.action_space.sample()
             _, _, done, _ = wrapped_env.step(action)
@@ -68,7 +77,9 @@ def build_and_run_list_config(
     env.close()
 
 
-def sample_and_test_action_wrappers(env: gym.Wrapper):
+def sample_and_test_action_wrappers(
+    env: gym.Wrapper, assert_equal_forward=True, assert_equal_backward=True
+):
     action_wrappers = []
     env_pointer = env
     while isinstance(env_pointer, gym.Wrapper):
@@ -87,10 +98,8 @@ def sample_and_test_action_wrappers(env: gym.Wrapper):
     for wrapper in reversed(action_wrappers):
         high_level_action = wrapper.reverse_action(high_level_action)
 
-    if isinstance(action, np.ndarray):
-        assert np.all(action == high_level_action)
-    else:
-        assert action == high_level_action
+    if assert_equal_forward:
+        np.testing.assert_equal(action, high_level_action)
 
     # low level action -> high level action -> low level action
     action = env.unwrapped.action_space.sample()
@@ -103,7 +112,5 @@ def sample_and_test_action_wrappers(env: gym.Wrapper):
     for wrapper in action_wrappers:
         low_level_action = wrapper.action(low_level_action)
 
-    if isinstance(action, np.ndarray):
-        assert np.all(action == low_level_action)
-    else:
-        assert action == low_level_action
+    if assert_equal_backward:
+        np.testing.assert_equal(action, low_level_action)
