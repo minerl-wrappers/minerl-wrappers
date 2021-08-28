@@ -63,9 +63,12 @@ def build_and_run_list_config(
     for i, config in enumerate(list_config):
         logging.debug(f"testing config: {config}")
         kwargs = list_kwargs[i]
-        wrapped_env = gym.wrappers.TimeLimit(env, max_steps)
+        wrapped_env = env
+        if kwargs.get("needs_time_limit", True):
+            wrapped_env = gym.wrappers.TimeLimit(wrapped_env, max_steps)
         wrapped_env = wrap(wrapped_env, **config)
-        wrapped_env.reset()
+        if kwargs.get("needs_reset", True) or i == 0:
+            wrapped_env.reset()
         if test_action_wrappers:
             sample_and_test_action_wrappers(wrapped_env, **kwargs)
         for step in range(max_steps):

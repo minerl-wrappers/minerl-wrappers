@@ -111,13 +111,17 @@ def test_diamond_wrappers():
         },
     ]
     list_kwargs = [{}] * len(config_list)
-    discrete_action_kwargs = {"assert_equal_backward": False}
-    list_kwargs[1] = discrete_action_kwargs
-    list_kwargs[2] = discrete_action_kwargs
-    list_kwargs[3] = discrete_action_kwargs
-    list_kwargs[4] = discrete_action_kwargs
-    list_kwargs[5] = discrete_action_kwargs
-    list_kwargs[8] = discrete_action_kwargs
+    discrete_action = {"assert_equal_backward": False}
+    no_reset = {"needs_reset": False, "needs_time_limit": False}
+    discrete_action_no_reset = {"assert_equal_backward": False}
+    discrete_action_no_reset.update(no_reset)
+    list_kwargs[1] = discrete_action_no_reset
+    list_kwargs[2] = discrete_action
+    list_kwargs[3] = discrete_action_no_reset
+    list_kwargs[4] = discrete_action
+    list_kwargs[5] = discrete_action_no_reset
+    list_kwargs[7] = no_reset
+    list_kwargs[8] = discrete_action
 
     def close(a1, a2):
         return numpy.testing.assert_almost_equal(a1, a2, decimal=6)
