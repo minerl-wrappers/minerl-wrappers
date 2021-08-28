@@ -16,7 +16,9 @@ def test_pfrl_2020_wrappers():
     config_validation(gym_id)
     means = load_means()
     config_list = [
-        {},
+        {
+            "pfrl_2020": True,
+        },
         {
             "pfrl_2020": True,
             "pfrl_2020_config": {

@@ -10,7 +10,9 @@ def test_rllib_wrappers():
     gym_id = "MineRLObtainDiamondDenseVectorObf-v0"
     means = load_means()
     config_list = [
-        {},
+        {
+            "rllib": True,
+        },
         {
             "rllib": True,
             "rllib_config": {
