@@ -30,10 +30,14 @@ def wrap_env(
     action_choices=None,
     include_vec_obs=True,
     channels_first=False,
+    tuple_obs_space=True,
+    flatten_action_space=True,
     **kwargs
 ):
-    env = MineRLObservationWrapper(env)
-    env = MineRLActionWrapper(env)
+    if tuple_obs_space:
+        env = MineRLObservationWrapper(env)
+    if flatten_action_space:
+        env = MineRLActionWrapper(env)
     discrete = False
     if action_choices is not None:
         discrete = True

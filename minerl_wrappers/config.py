@@ -52,6 +52,8 @@ DEFAULT_CONFIG = {
         "action_choices": None,
         "include_vec_obs": True,
         "channels_first": False,
+        "tuple_obs_space": True,
+        "flatten_action_space": True,
     },
 }
 
