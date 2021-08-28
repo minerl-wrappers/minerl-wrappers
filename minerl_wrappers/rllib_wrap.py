@@ -62,10 +62,10 @@ def wrap_env(
         env = MineRLPOVChannelsFirstWrapper(env)
     if reward_scale != 1.0:
         env = MineRLRewardScaleWrapper(env, reward_scale)
-    if frame_stack > 1:
-        env = MineRLObservationStack(env, frame_stack)
     if not include_vec_obs:
         env = MineRLRemoveVecObservationWrapper(env, kwargs.get("pov_space_index", 0))
+    if frame_stack > 1:
+        env = MineRLObservationStack(env, frame_stack)
     if frame_skip > 1:
         env = MineRLActionRepeat(env, frame_skip)
     if seed is not None:

@@ -18,13 +18,11 @@ class MineRLObservationStack(gym.Wrapper):
             self.tuple = True
             new_spaces = []
             for space in self.observation_space:
-                if isinstance(space, gym.spaces.Box):
-                    low = np.repeat(space.low[np.newaxis, ...], num_stack, axis=0)
-                    high = np.repeat(space.high[np.newaxis, ...], num_stack, axis=0)
-                    new_space = gym.spaces.Box(low=low, high=high, dtype=space.dtype)
-                    new_spaces.append(new_space)
-                else:
-                    raise NotImplementedError
+                assert isinstance(space, gym.spaces.Box)
+                low = np.repeat(space.low[np.newaxis, ...], num_stack, axis=0)
+                high = np.repeat(space.high[np.newaxis, ...], num_stack, axis=0)
+                new_space = gym.spaces.Box(low=low, high=high, dtype=space.dtype)
+                new_spaces.append(new_space)
                 self.tuple_len += 1
             self.observation_space = gym.spaces.Tuple(new_spaces)
         elif isinstance(self.observation_space, gym.spaces.Box):
