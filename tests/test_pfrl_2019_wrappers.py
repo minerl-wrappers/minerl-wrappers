@@ -38,7 +38,7 @@ def test_pfrl_2019_wrappers():
             },
         },
     ]
-    build_and_run_list_config(gym_id, config_list, 4)
+    build_and_run_list_config(gym_id, config_list, max_steps=4)
 
 
 def config_validation(gym_id):
