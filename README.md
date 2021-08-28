@@ -27,46 +27,15 @@
 # Wappers
 - pfrl wrappers: an assortment of wrappers ported over from the [2020 PfN minerl baselines](https://github.com/minerllabs/baselines/tree/master/2020)
 and [2019 PfN minerl baselines](https://github.com/minerllabs/baselines/tree/master/2019)
+  - Supports Basic Environments for 2019 and Diamond Competition Environments for 2020
+- rllib wrappers: updated wrappers for the 2021 competition
+  - Supports Diamond Competition Environments
 
 ## Wrap arguments
 For documentation see wrapper files:  
 [pfrl_2019_wrappers.py](https://github.com/minerl-wrappers/minerl-wrappers/blob/main/minerl_wrappers/pfrl_2019_wrappers.py)  
 [pfrl_2020_wrappers.py](https://github.com/minerl-wrappers/minerl-wrappers/blob/main/minerl_wrappers/pfrl_2020_wrappers.py)
-
-```python
-DEFAULT_CONFIG = {
-    "pfrl_2019": False,
-    "pfrl_2019_config": {
-        "test": False,
-        "monitor": False,
-        "outdir": "results",
-        "frame_skip": None,
-        "gray_scale": False,
-        "frame_stack": None,
-        "disable_action_prior": False,
-        "always_keys": None,
-        "reverse_keys": None,
-        "exclude_keys": None,
-        "exclude_noop": False,
-        "randomize_action": False,
-        "eval_epsilon": 0.001,
-    },
-    "pfrl_2020": False,
-    "pfrl_2020_config": {
-        "test": False,
-        "monitor": False,
-        "outdir": "results",
-        "frame_skip": None,
-        "gray_scale": False,
-        "frame_stack": None,
-        "randomize_action": False,
-        "eval_epsilon": 0.001,
-        "action_choices": None,
-        "include_vec_obs": False,
-        "tuple_obs_space": False,
-    },
-}
-```
+[rllib_wrap.py](https://github.com/minerl-wrappers/minerl-wrappers/blob/main/minerl_wrappers/rllib_wrap.py)
 
 # Requirements
 - Java JDK 8
