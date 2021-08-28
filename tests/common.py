@@ -1,6 +1,7 @@
 import logging
 
 import gym
+import numpy as np
 from minerl.herobraine.envs import (
     BASIC_ENV_SPECS,
     COMPETITION_ENV_SPECS,
@@ -75,6 +76,7 @@ def sample_and_test_action_wrappers(env: gym.Wrapper):
             action_wrappers.append(env_pointer)
         env_pointer = env_pointer.env
 
+    # high level action -> low level action -> high level action
     action = env.action_space.sample()
 
     low_level_action = action
@@ -85,4 +87,23 @@ def sample_and_test_action_wrappers(env: gym.Wrapper):
     for wrapper in reversed(action_wrappers):
         high_level_action = wrapper.reverse_action(high_level_action)
 
-    assert action == high_level_action
+    if isinstance(action, np.ndarray):
+        assert np.all(action == high_level_action)
+    else:
+        assert action == high_level_action
+
+    # low level action -> high level action -> low level action
+    action = env.unwrapped.action_space.sample()
+
+    high_level_action = action
+    for wrapper in reversed(action_wrappers):
+        high_level_action = wrapper.reverse_action(high_level_action)
+
+    low_level_action = high_level_action
+    for wrapper in action_wrappers:
+        low_level_action = wrapper.action(low_level_action)
+
+    if isinstance(action, np.ndarray):
+        assert np.all(action == low_level_action)
+    else:
+        assert action == low_level_action
