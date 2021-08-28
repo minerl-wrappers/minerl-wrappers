@@ -10,6 +10,7 @@ def normalize(a, prev_low, prev_high, new_low, new_high):
 class MineRLNormalizeObservationWrapper(gym.ObservationWrapper):
     def __init__(self, env, pov_low=0.0, pov_high=1.0, vec_low=-1.0, vec_high=1.0):
         super().__init__(env)
+        assert isinstance(self.env.observation_space, gym.spaces.Tuple)
         self._old_pov_space: gym.spaces.Box = self.env.observation_space.spaces[0]
         self._old_vec_space: gym.spaces.Box = self.env.observation_space.spaces[1]
         self._pov_space = gym.spaces.Box(
@@ -42,7 +43,8 @@ class MineRLNormalizeObservationWrapper(gym.ObservationWrapper):
 class MineRLNormalizeActionWrapper(gym.ActionWrapper):
     def __init__(self, env, low=-1.0, high=1.0):
         super().__init__(env)
-        self._old_vec_space: gym.spaces.Box = self.env.action_space
+        self._old_vec_space: gym.spaces.Box = self.action_space
+        assert isinstance(self._old_vec_space, gym.spaces.Box)
         self._vec_space = gym.spaces.Box(
             low, high, self._old_vec_space.low.shape, np.float32
         )
