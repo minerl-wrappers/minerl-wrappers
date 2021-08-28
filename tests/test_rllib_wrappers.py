@@ -1,6 +1,6 @@
 import logging
 
-from minerl_wrappers.utils import load_means
+from minerl_wrappers.utils import load_means, DEFAULT_KMEANS_FILE
 from tests.common import build_and_run_list_config
 
 logging.basicConfig(level=logging.DEBUG)
@@ -30,7 +30,7 @@ def test_rllib_wrappers():
         {
             "rllib": True,
             "rllib_config": {
-                "action_choices": means,
+                "action_choices": DEFAULT_KMEANS_FILE,
                 "gray_scale": True,
             },
         },
