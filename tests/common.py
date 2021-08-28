@@ -55,9 +55,31 @@ def build_and_run_list_config(gym_id, list_config: list, max_steps=1):
         logging.debug(f"testing config: {config}")
         wrapped_env = wrap(env, **config)
         wrapped_env.reset()
+        sample_and_test_action_wrappers(wrapped_env)
         for step in range(max_steps):
             action = wrapped_env.action_space.sample()
             _, _, done, _ = wrapped_env.step(action)
             if done:
                 break
     env.close()
+
+
+def sample_and_test_action_wrappers(env: gym.Wrapper):
+    action_wrappers = []
+    env_pointer = env
+    while isinstance(env_pointer, gym.Wrapper):
+        if isinstance(env_pointer, gym.ActionWrapper):
+            action_wrappers.append(env_pointer)
+        env_pointer = env_pointer.env
+
+    action = env.action_space.sample()
+
+    low_level_action = action
+    for wrapper in action_wrappers:
+        low_level_action = wrapper.action(low_level_action)
+
+    high_level_action = low_level_action
+    for wrapper in reversed(action_wrappers):
+        high_level_action = wrapper.reverse_action(high_level_action)
+
+    assert action == high_level_action
