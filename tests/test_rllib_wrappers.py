@@ -72,4 +72,4 @@ def test_rllib_wrappers():
             },
         },
     ]
-    build_and_run_list_config(gym_id, config_list, 4)
+    build_and_run_list_config(gym_id, config_list, 4, True)
