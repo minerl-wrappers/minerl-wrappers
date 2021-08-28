@@ -58,7 +58,6 @@ class MineRLNormalizeActionWrapper(gym.ActionWrapper):
         )
 
     def reverse_action(self, action):
-        action = self.env.reverse_action(action)
         return normalize(
             action,
             self._vec_space.low,
