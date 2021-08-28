@@ -24,7 +24,7 @@ def test_diamond_wrappers():
         {
             "diamond": True,
             "diamond_config": {
-                "action_choices": means,
+                "action_choices": "debug",
                 "frame_skip": 4,
                 "frame_stack": 4,
             },
