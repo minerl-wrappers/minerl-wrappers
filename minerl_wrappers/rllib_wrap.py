@@ -1,17 +1,17 @@
-from .rllib.action_repeat_wrapper import MineRLActionRepeat
-from .rllib.action_wrapper import MineRLActionWrapper
-from .rllib.deterministic_wrapper import MineRLDeterministic
-from .rllib.discrete_action_wrapper import (
+from .core.action_repeat_wrapper import MineRLActionRepeat
+from .core.action_wrapper import MineRLActionWrapper
+from .core.deterministic_wrapper import MineRLDeterministic
+from .core.discrete_action_wrapper import (
     MineRLDiscreteActionWrapper,
 )
-from .rllib.gray_scale_wrapper import MineRLGrayScale
-from .rllib.normalize import (
+from .core.gray_scale_wrapper import MineRLGrayScale
+from .core.normalize import (
     MineRLNormalizeObservationWrapper,
     MineRLNormalizeActionWrapper,
     MineRLRewardScaleWrapper,
 )
-from .rllib.observation_stack_wrapper import MineRLObservationStack
-from .rllib.observation_wrapper import (
+from .core.observation_stack_wrapper import MineRLObservationStack
+from .core.observation_wrapper import (
     MineRLObservationWrapper,
     MineRLRemoveVecObservationWrapper,
     MineRLPOVChannelsFirstWrapper,
