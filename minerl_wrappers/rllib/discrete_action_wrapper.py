@@ -6,12 +6,11 @@ from sklearn.neighbors import NearestNeighbors
 class MineRLDiscreteActionWrapper(gym.ActionWrapper):
     def __init__(self, env, action_choices=None):
         super().__init__(env)
+        assert isinstance(action_choices, np.ndarray) or isinstance(action_choices, str)
         if isinstance(action_choices, np.ndarray):
             self.action_choices = action_choices
         elif isinstance(action_choices, str):
             self.action_choices = np.load(action_choices)
-        else:
-            raise ValueError("must set file_path or action_choices")
         num_actions = len(self.action_choices)
         self.action_space = gym.spaces.Discrete(num_actions)
         self.nearest_neighbors = NearestNeighbors(n_neighbors=1).fit(

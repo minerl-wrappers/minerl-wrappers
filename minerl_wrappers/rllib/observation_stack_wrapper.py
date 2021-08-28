@@ -14,6 +14,9 @@ class MineRLObservationStack(gym.Wrapper):
         self.frames = deque(maxlen=num_stack)
         self.tuple = False
         self.tuple_len = 0
+        assert isinstance(self.observation_space, gym.spaces.Tuple) or isinstance(
+            self.observation_space, gym.spaces.Box
+        )
         if isinstance(self.observation_space, gym.spaces.Tuple):
             self.tuple = True
             new_spaces = []
@@ -35,8 +38,6 @@ class MineRLObservationStack(gym.Wrapper):
             self.observation_space = gym.spaces.Box(
                 low=low, high=high, dtype=self.observation_space.dtype
             )
-        else:
-            raise NotImplementedError
 
     def _get_observation(self):
         assert len(self.frames) == self.num_stack, (len(self.frames), self.num_stack)
