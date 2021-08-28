@@ -56,7 +56,8 @@ def build_and_run_list_config(
     env = gym.make(gym_id)
     for config in list_config:
         logging.debug(f"testing config: {config}")
-        wrapped_env = wrap(env, **config)
+        wrapped_env = gym.wrappers.TimeLimit(env, max_steps)
+        wrapped_env = wrap(wrapped_env, **config)
         wrapped_env.reset()
         if test_action_wrappers:
             assert_equal_backward = True
