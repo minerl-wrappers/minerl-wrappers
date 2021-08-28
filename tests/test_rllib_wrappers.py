@@ -94,6 +94,21 @@ def test_rllib_wrappers():
                 "channels_first": True,
             },
         },
+        {
+            "rllib": True,
+            "rllib_config": {
+                "tuple_obs_space": False,
+                "flatten_action_space": False,
+            },
+        },
+        {
+            "rllib": True,
+            "rllib_config": {
+                "tuple_obs_space": False,
+                "flatten_action_space": False,
+                "channels_first": True,
+            },
+        },
     ]
     list_kwargs = [{}] * len(config_list)
     discrete_action_kwargs = {"assert_equal_backward": False}
