@@ -62,12 +62,12 @@ def wrap_env(
             env = MineRLNormalizeActionWrapper(
                 env, kwargs.get("norm_act_low", -1.0), kwargs.get("norm_act_high", 1.0)
             )
+    if not include_vec_obs:
+        env = MineRLRemoveVecObservationWrapper(env, kwargs.get("pov_space_index", 0))
     if channels_first:
         env = MineRLPOVChannelsFirstWrapper(env)
     if reward_scale != 1.0:
         env = MineRLRewardScaleWrapper(env, reward_scale)
-    if not include_vec_obs:
-        env = MineRLRemoveVecObservationWrapper(env, kwargs.get("pov_space_index", 0))
     if frame_stack > 1:
         env = MineRLObservationStack(env, frame_stack)
     if frame_skip > 1:
