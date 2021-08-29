@@ -2,6 +2,7 @@ from abc import ABC
 
 import gym
 import numpy as np
+from gym.spaces import Box
 
 
 class MineRLObservationTransformationWrapper(gym.ObservationWrapper):
@@ -39,10 +40,10 @@ class MineRLObservationTransformationWrapper(gym.ObservationWrapper):
         else:
             return self.transform_pov(observation)
 
-    def transform_pov_space(self, pov_space: gym.Space) -> gym.Space:
+    def transform_pov_space(self, pov_space: Box) -> Box:
         raise NotImplementedError
 
-    def transform_vec_space(self, vec_space: gym.Space) -> gym.Space:
+    def transform_vec_space(self, vec_space: Box) -> Box:
         raise NotImplementedError
 
     def transform_pov(self, pov):

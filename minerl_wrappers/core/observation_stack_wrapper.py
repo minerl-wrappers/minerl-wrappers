@@ -16,7 +16,7 @@ class MineRLObservationStack(gym.Wrapper):
         self.tuple_len = 0
         assert isinstance(self.observation_space, gym.spaces.Tuple) or isinstance(
             self.observation_space, gym.spaces.Box
-        )
+        ), "Currently, stacking only supports gym Box or Tuple spaces."
         if isinstance(self.observation_space, gym.spaces.Tuple):
             self.tuple = True
             new_spaces = []
