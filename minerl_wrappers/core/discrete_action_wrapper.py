@@ -5,6 +5,9 @@ import numpy as np
 class MineRLDiscreteActionWrapper(gym.ActionWrapper):
     def __init__(self, env, action_choices=None):
         super().__init__(env)
+        assert isinstance(
+            self.env.action_space, gym.spaces.Box
+        ), "Wrapped env must have vector action space."
         assert isinstance(action_choices, np.ndarray) or isinstance(action_choices, str)
         if isinstance(action_choices, np.ndarray):
             self.action_choices = action_choices
