@@ -1,10 +1,66 @@
-import copy
+from abc import ABC
 
 import gym
 import numpy as np
 
 
-class MineRLObservationWrapper(gym.ObservationWrapper):
+class MineRLObservationTransformationWrapper(gym.ObservationWrapper):
+    def __init__(self, env):
+        super().__init__(env)
+        if isinstance(self.env.observation_space, gym.spaces.Dict):
+            self.old_pov_space = self.env.observation_space.spaces["pov"]
+            self.old_vec_space = self.env.observation_space.spaces["vector"]
+            self.pov_space = self.transform_pov_space(self.old_pov_space)
+            self.vec_space = self.transform_vec_space(self.old_vec_space)
+            spaces = {"pov": self.pov_space, "vec": self.vec_space}
+            self.observation_space = gym.spaces.Dict(spaces)
+        elif isinstance(self.env.observation_space, gym.spaces.Tuple):
+            self.old_pov_space = self.env.observation_space.spaces[0]
+            self.old_vec_space = self.env.observation_space.spaces[1]
+            self.pov_space = self.transform_pov_space(self.old_pov_space)
+            self.vec_space = self.transform_vec_space(self.old_vec_space)
+            spaces = (self.pov_space, self.vec_space)
+            self.observation_space = gym.spaces.Tuple(spaces)
+        else:
+            self.old_pov_space = self.env.observation_space
+            self.pov_space = self.transform_pov_space(self.old_pov_space)
+            assert isinstance(self.pov_space, gym.Space)
+            self.observation_space = self.pov_space
+
+    def observation(self, observation):
+        if isinstance(observation, dict):
+            pov = self.transform_pov(observation["pov"])
+            vec = self.transform_vec(observation["vector"])
+            return {"pov": pov, "vector": vec}
+        elif isinstance(observation, tuple):
+            pov = self.transform_pov(observation[0])
+            vec = self.transform_vec(observation[1])
+            return pov, vec
+        else:
+            return self.transform_pov(observation)
+
+    def transform_pov_space(self, pov_space: gym.Space) -> gym.Space:
+        raise NotImplementedError
+
+    def transform_vec_space(self, vec_space: gym.Space) -> gym.Space:
+        raise NotImplementedError
+
+    def transform_pov(self, pov):
+        raise NotImplementedError
+
+    def transform_vec(self, vec):
+        raise NotImplementedError
+
+
+class MineRLPOVTransformationWrapper(MineRLObservationTransformationWrapper, ABC):
+    def transform_vec_space(self, vec_space):
+        return vec_space
+
+    def transform_vec(self, vec):
+        return vec
+
+
+class MineRLTupleObservationWrapper(gym.ObservationWrapper):
     def __init__(self, env):
         super().__init__(env)
         self.observation_space = gym.spaces.Tuple(
@@ -26,32 +82,12 @@ class MineRLRemoveVecObservationWrapper(gym.ObservationWrapper):
         return observation[self._pov_space_index]
 
 
-class MineRLPOVChannelsFirstWrapper(gym.ObservationWrapper):
-    def __init__(self, env):
-        super().__init__(env)
-        if isinstance(self.observation_space, gym.spaces.Dict):
-            self.observation_space.spaces["pov"] = transpose_space(
-                self.observation_space.spaces["pov"]
-            )
-        elif isinstance(self.observation_space, gym.spaces.Tuple):
-            pov_space = transpose_space(self.observation_space.spaces[0])
-            self.observation_space.spaces = (
-                pov_space,
-                *self.observation_space.spaces[1:],
-            )
-        else:
-            self.observation_space = transpose_space(self.observation_space)
+class MineRLPOVChannelsFirstWrapper(MineRLPOVTransformationWrapper):
+    def transform_pov_space(self, pov_space):
+        return transpose_space(pov_space)
 
-    def observation(self, observation):
-        if isinstance(observation, dict):
-            obs = copy.copy(observation)
-            obs["pov"] = transpose_obs(observation["pov"])
-        elif isinstance(observation, tuple):
-            pov = transpose_obs(observation[0])
-            obs = (pov, *observation[1:])
-        else:
-            obs = transpose_obs(observation)
-        return obs
+    def transform_pov(self, pov):
+        return transpose_obs(pov)
 
 
 def transpose_obs(pov_obs: np.ndarray):

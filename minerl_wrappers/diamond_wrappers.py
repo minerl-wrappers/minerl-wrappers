@@ -12,7 +12,7 @@ from .core.normalize import (
 )
 from .core.observation_stack_wrapper import MineRLObservationStack
 from .core.observation_wrapper import (
-    MineRLObservationWrapper,
+    MineRLTupleObservationWrapper,
     MineRLRemoveVecObservationWrapper,
     MineRLPOVChannelsFirstWrapper,
 )
@@ -34,8 +34,10 @@ def wrap_env(
     flatten_action_space=True,
     **kwargs
 ):
+    if not include_vec_obs:
+        tuple_obs_space = True
     if tuple_obs_space:
-        env = MineRLObservationWrapper(env)
+        env = MineRLTupleObservationWrapper(env)
     if flatten_action_space:
         env = MineRLActionWrapper(env)
     discrete = False
