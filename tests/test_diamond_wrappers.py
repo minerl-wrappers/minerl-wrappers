@@ -109,6 +109,14 @@ def test_diamond_wrappers():
                 "channels_first": True,
             },
         },
+        {
+            "diamond": True,
+            "diamond_config": {
+                "tuple_obs_space": False,
+                "flatten_action_space": False,
+                "normalize_action": True,
+            },
+        },
     ]
     list_kwargs = [{}] * len(config_list)
     discrete_action = {"assert_equal_backward": False}
@@ -128,4 +136,7 @@ def test_diamond_wrappers():
 
     list_kwargs[9] = {"forward_equality_check": close, "assert_equal_backward": False}
     list_kwargs[10] = {"assert_equal_forward": False, "assert_equal_backward": False}
+    list_kwargs[11] = no_reset
+    list_kwargs[12] = no_reset
+    list_kwargs[13] = {"assert_equal_forward": False, "assert_equal_backward": False}
     build_and_run_list_config(gym_id, config_list, list_kwargs, 4, True)

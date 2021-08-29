@@ -1,7 +1,9 @@
 import gym
 import numpy as np
+from gym.spaces import Box
 from gym.wrappers import TransformReward
 
+from .action_wrapper import MineRLActionTransformationWrapper
 from .observation_wrapper import MineRLObservationTransformationWrapper
 
 
@@ -46,32 +48,31 @@ class MineRLNormalizeObservationWrapper(MineRLObservationTransformationWrapper):
         )
 
 
-class MineRLNormalizeActionWrapper(gym.ActionWrapper):
+class MineRLNormalizeActionWrapper(MineRLActionTransformationWrapper):
     def __init__(self, env, low=-1.0, high=1.0):
+        self.low = low
+        self.high = high
         super().__init__(env)
-        self._old_vec_space: gym.spaces.Box = self.action_space
-        assert isinstance(self._old_vec_space, gym.spaces.Box)
-        self._vec_space = gym.spaces.Box(
-            low, high, self._old_vec_space.low.shape, np.float32
-        )
-        self.action_space = self._vec_space
 
-    def action(self, action):
+    def transform_vec_space(self, vec_space: Box) -> Box:
+        return Box(self.low, self.high, self.old_vec_space.low.shape, np.float32)
+
+    def transform_vec(self, vec):
         return normalize(
-            action,
-            self._old_vec_space.low,
-            self._old_vec_space.high,
-            self._vec_space.low,
-            self._vec_space.high,
+            vec,
+            self.old_vec_space.low,
+            self.old_vec_space.high,
+            self.vec_space.low,
+            self.vec_space.high,
         )
 
-    def reverse_action(self, action):
+    def reverse_transform_vec(self, vec):
         return normalize(
-            action,
-            self._vec_space.low,
-            self._vec_space.high,
-            self._old_vec_space.low,
-            self._old_vec_space.high,
+            vec,
+            self.vec_space.low,
+            self.vec_space.high,
+            self.old_vec_space.low,
+            self.old_vec_space.high,
         )
 
 

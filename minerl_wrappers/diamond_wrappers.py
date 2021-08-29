@@ -1,5 +1,5 @@
 from .core.action_repeat_wrapper import MineRLActionRepeat
-from .core.action_wrapper import MineRLActionWrapper
+from .core.action_wrapper import MineRLFlattenActionWrapper
 from .core.deterministic_wrapper import MineRLDeterministic
 from .core.discrete_action_wrapper import (
     MineRLDiscreteActionWrapper,
@@ -39,7 +39,7 @@ def wrap_env(
     if tuple_obs_space:
         env = MineRLTupleObservationWrapper(env)
     if flatten_action_space:
-        env = MineRLActionWrapper(env)
+        env = MineRLFlattenActionWrapper(env)
     discrete = False
     if action_choices is not None:
         discrete = True
