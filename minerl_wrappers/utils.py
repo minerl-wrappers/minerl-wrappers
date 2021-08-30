@@ -3,6 +3,8 @@ import os
 
 import numpy as np
 
+
+# 30 kmeans on the MineRLObtainDiamondDenseVectorObf-v0 environment
 DEFAULT_KMEANS_FILE = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "./data/means.npy"
 )

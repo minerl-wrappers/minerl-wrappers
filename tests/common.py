@@ -1,6 +1,7 @@
 import logging
 
 import gym
+import numpy as np
 from minerl.herobraine.envs import (
     BASIC_ENV_SPECS,
     COMPETITION_ENV_SPECS,
@@ -49,15 +50,78 @@ def build_and_run_step(gym_id, config_file=None, **kwargs):
     env.close()
 
 
-def build_and_run_list_config(gym_id, list_config: list, max_steps=1):
+def build_and_run_list_config(
+    gym_id,
+    list_config: list,
+    list_kwargs: list = None,
+    max_steps=1,
+    test_action_wrappers=False,
+):
+    if list_kwargs is None:
+        list_kwargs = [{}] * len(list_config)
     env = gym.make(gym_id)
-    for config in list_config:
+    for i, config in enumerate(list_config):
         logging.debug(f"testing config: {config}")
-        wrapped_env = wrap(env, **config)
-        wrapped_env.reset()
+        kwargs = list_kwargs[i]
+        wrapped_env = env
+        if kwargs.get("needs_time_limit", True):
+            wrapped_env = gym.wrappers.TimeLimit(wrapped_env, max_steps)
+        wrapped_env = wrap(wrapped_env, **config)
+        if kwargs.get("needs_reset", True) or i == 0:
+            wrapped_env.reset()
+        if test_action_wrappers:
+            sample_and_test_action_wrappers(wrapped_env, **kwargs)
         for step in range(max_steps):
             action = wrapped_env.action_space.sample()
             _, _, done, _ = wrapped_env.step(action)
             if done:
                 break
     env.close()
+
+
+def sample_and_test_action_wrappers(
+    env: gym.Wrapper,
+    assert_equal_forward=True,
+    assert_equal_backward=True,
+    forward_equality_check=None,
+    backward_equality_check=None,
+    **_,
+):
+    action_wrappers = []
+    env_pointer = env
+    while isinstance(env_pointer, gym.Wrapper):
+        if isinstance(env_pointer, gym.ActionWrapper):
+            action_wrappers.append(env_pointer)
+        env_pointer = env_pointer.env
+
+    # high level action -> low level action -> high level action
+    action = env.action_space.sample()
+
+    low_level_action = action
+    for wrapper in action_wrappers:
+        low_level_action = wrapper.action(low_level_action)
+
+    high_level_action = low_level_action
+    for wrapper in reversed(action_wrappers):
+        high_level_action = wrapper.reverse_action(high_level_action)
+
+    if forward_equality_check:
+        forward_equality_check(action, high_level_action)
+    elif assert_equal_forward:
+        np.testing.assert_equal(action, high_level_action)
+
+    # low level action -> high level action -> low level action
+    action = env.unwrapped.action_space.sample()
+
+    high_level_action = action
+    for wrapper in reversed(action_wrappers):
+        high_level_action = wrapper.reverse_action(high_level_action)
+
+    low_level_action = high_level_action
+    for wrapper in action_wrappers:
+        low_level_action = wrapper.action(low_level_action)
+
+    if backward_equality_check:
+        backward_equality_check(action, low_level_action)
+    elif assert_equal_backward:
+        np.testing.assert_equal(action, low_level_action)

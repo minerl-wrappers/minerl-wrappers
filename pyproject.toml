@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "minerl-wrappers"
-version = "0.1.1"
+version = "0.1.2"
 description = "minerl-wrappers compiles common wrappers and standardizes code for reproducibility in the MineRL environment!"
 authors = ["Julius Frost"]
 
