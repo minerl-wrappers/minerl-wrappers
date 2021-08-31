@@ -1,0 +1,33 @@
+name: "Release"
+on:
+  push:
+    tags:
+      - "v*.*.*"
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Retrieve Cached Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      - name: Build Test Image
+        run: |
+          docker buildx build \
+          --target test \
+          -t minerl-wrappers:latest \
+          --cache-from type=local,src=/tmp/.buildx-cache \
+          --load .
+      - name: Build and publish to pypi
+        run: |
+          docker run --rm -i --env POETRY_PYPI_TOKEN_PYPI minerl-wrappers:latest \
+          poetry publish --build
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
