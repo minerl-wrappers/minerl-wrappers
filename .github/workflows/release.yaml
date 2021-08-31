@@ -3,18 +3,34 @@ on:
   push:
     tags:
       - "v*.*.*"
+  pull_request:
+    branches:
+      - main
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - uses: actions/setup-java@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Cache Docker layers
+        uses: actions/cache@v2
         with:
-          distribution: 'zulu'
-          java-version: '8'
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      - name: Build Test Image
+        run: |
+          docker buildx build \
+          --target test \
+          -t minerl-wrappers:latest \
+          --cache-from type=local,src=/tmp/.buildx-cache \
+          --load
       - name: Build and publish to pypi
-        uses: JRubics/poetry-publish@v1.8
-        with:
-          pypi_token: ${{ secrets.PYPI_TOKEN }}
-          ignore_dev_requirements: true
+        run: |
+          docker run --rm -it --env POETRY_PYPI_TOKEN_PYPI minerl-wrappers:latest \
+          poetry publish --build --dry-run
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
