@@ -45,6 +45,11 @@ For documentation see wrapper files:
 
 Make sure you have Java JDK 8 installed as the only Java version for MineRL.
 
+Install with pip from pypi:
+```bash
+pip install minerl-wrappers
+```
+
 Install directly from git:
 ```bash
 pip install git+https://github.com/minerl-wrappers/minerl-wrappers.git
