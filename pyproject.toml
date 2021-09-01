@@ -2,7 +2,11 @@
 name = "minerl-wrappers"
 version = "0.1.2"
 description = "minerl-wrappers compiles common wrappers and standardizes code for reproducibility in the MineRL environment!"
-authors = ["Julius Frost"]
+license = "GPL-3.0-only"
+authors = ["minerl-wrappers"]
+readme = "README.md"
+homepage = "https://github.com/minerl-wrappers/minerl-wrappers/"
+repository = "https://github.com/minerl-wrappers/minerl-wrappers/"
 
 [tool.poetry.dependencies]
 python = "^3.7"
