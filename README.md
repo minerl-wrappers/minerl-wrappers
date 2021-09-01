@@ -1,5 +1,11 @@
 # minerl-wrappers
 
+![Tests](https://github.com/minerl-wrappers/minerl-wrappers/actions/workflows/workflow.yaml/badge.svg)
+[![codecov](https://codecov.io/gh/minerl-wrappers/minerl-wrappers/branch/main/graph/badge.svg?token=0BPxXISonq)](https://codecov.io/gh/minerl-wrappers/minerl-wrappers)
+![PyPI](https://img.shields.io/pypi/v/minerl-wrappers)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/minerl-wrappers)
+![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/pypi/minerl-wrappers)
+
 `minerl-wrappers` compiles common wrappers and standardizes code for reproducibility in the [MineRL environment](https://minerl.readthedocs.io/en/latest/index.html)!
 
 # Currently Supported Environments
@@ -44,6 +50,11 @@ For documentation see wrapper files:
 # Install
 
 Make sure you have Java JDK 8 installed as the only Java version for MineRL.
+
+Install with pip from pypi:
+```bash
+pip install minerl-wrappers
+```
 
 Install directly from git:
 ```bash
