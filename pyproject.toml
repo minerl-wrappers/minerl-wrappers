@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "minerl-wrappers"
-version = "0.1.2"
+version = "0.1.3"
 description = "minerl-wrappers compiles common wrappers and standardizes code for reproducibility in the MineRL environment!"
 license = "GPL-3.0-only"
 authors = ["minerl-wrappers"]
