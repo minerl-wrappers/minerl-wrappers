@@ -403,7 +403,7 @@ traitlets = "*"
 
 [[package]]
 name = "minerl"
-version = "0.4.1a2"
+version = "0.4.2"
 description = "MineRL environment and data loader for reinforcement learning from human demonstration in Minecraft"
 category = "main"
 optional = false
@@ -879,7 +879,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "f977e3806092c2ea074819fb1609a59c9c2a066adf5178fc3f3b4a651203f6f9"
+content-hash = "76b7e562a3129ef9274859110e5e1fd880aa60cbf26480a499060eb591844f41"
 
 [metadata.files]
 appnope = [
@@ -1205,7 +1205,7 @@ matplotlib-inline = [
     {file = "matplotlib_inline-0.1.3-py3-none-any.whl", hash = "sha256:aed605ba3b72462d64d475a21a9296f400a19c4f74a31b59103d2a99ffd5aa5c"},
 ]
 minerl = [
-    {file = "minerl-0.4.1a2.tar.gz", hash = "sha256:ddeff068c75d586d9b36cd839a611feabff594d9549d93c8bbdfad3bb5d1dd53"},
+    {file = "minerl-0.4.2.tar.gz", hash = "sha256:653d2fe1079e003736dccee09fd957570e238dce1ac411ffa3e2d342bafa4006"},
 ]
 mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},

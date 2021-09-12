@@ -39,13 +39,12 @@ and [2019 PfN minerl baselines](https://github.com/minerllabs/baselines/tree/mas
 ## Wrap arguments
 For documentation see wrapper files:  
 [pfrl_2019_wrappers.py](https://github.com/minerl-wrappers/minerl-wrappers/blob/main/minerl_wrappers/pfrl_2019_wrappers.py)  
-[pfrl_2020_wrappers.py](https://github.com/minerl-wrappers/minerl-wrappers/blob/main/minerl_wrappers/pfrl_2020_wrappers.py)
+[pfrl_2020_wrappers.py](https://github.com/minerl-wrappers/minerl-wrappers/blob/main/minerl_wrappers/pfrl_2020_wrappers.py)  
 [diamond_wrappers.py](https://github.com/minerl-wrappers/minerl-wrappers/blob/main/minerl_wrappers/diamond_wrappers.py)
 
 # Requirements
 - Java JDK 8
 - Python 3.7+
-- `minerl==0.4.1`
 
 # Install
 
