@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "minerl-wrappers"
-version = "0.1.4"
+version = "0.1.5"
 description = "minerl-wrappers compiles common wrappers and standardizes code for reproducibility in the MineRL environment!"
 license = "GPL-3.0-only"
 authors = ["Julius Frost"]
@@ -10,7 +10,7 @@ repository = "https://github.com/minerl-wrappers/minerl-wrappers/"
 
 [tool.poetry.dependencies]
 python = "^3.7"
-minerl = "0.4.1a2"
+minerl = "0.4.2"
 gym = "^0.19.0"
 numpy = "^1.21.0"
 opencv-python = "^4.5.3"
