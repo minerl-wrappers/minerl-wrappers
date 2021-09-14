@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "minerl-wrappers"
-version = "0.1.5"
+version = "0.1.6"
 description = "minerl-wrappers compiles common wrappers and standardizes code for reproducibility in the MineRL environment!"
 license = "GPL-3.0-only"
 authors = ["Julius Frost"]
@@ -10,18 +10,18 @@ repository = "https://github.com/minerl-wrappers/minerl-wrappers/"
 
 [tool.poetry.dependencies]
 python = "^3.7"
-minerl = "0.4.2"
-gym = "^0.19.0"
-numpy = "^1.21.0"
-opencv-python = "^4.5.3"
-PyYAML = "^5.4.1"
-
+minerl = "^0.4.0"
+gym = "*"
+numpy = "*"
+opencv-python = "*"
+PyYAML = "*"
 
 [tool.poetry.dev-dependencies]
 black = "^21.7b0"
 pytest = "^6.2.4"
 scikit-learn = "^0.24.2"
 pytest-cov = "^2.12.1"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
